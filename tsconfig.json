@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* 🌍 Environment */
+    "module": "ESNext",               // ES modules (Vite compatible)
+    "target": "ESNext",               // Latest JS features
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Browser + modern features
+
+    /* ⚛️ React / JSX */
+    "jsx": "react-jsx",               // React 17+ JSX transform
+    "moduleResolution": "Node",       // Resolve like Node/Vite
+    "allowJs": false,                 // Force .ts/.tsx only
+
+    /* 📦 Project Structure */
+    "baseUrl": "./resources/js",      // Let you import with "@/..."
+    "paths": {
+      "@/*": ["*"]
+    },
+
+    /* 📜 Output */
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./.tsbuild",           // Keep TS output out of Laravel’s public
+
+    /* ✅ Type Checking */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* 🚫 Warnings to Consider Turning On Later */
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    // "noFallthroughCasesInSwitch": true
+  },
+   "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts"]
+}
