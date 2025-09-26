@@ -15,7 +15,7 @@ function NavCollapsible({children , icon , titleCollapsible} : Props) {
   return (
         <SidebarGroup>
 
-            <SidebarGroupLabel>Menu</SidebarGroupLabel>
+            {/* <SidebarGroupLabel>Menu</SidebarGroupLabel> */}
             <SidebarGroupContent>
                 <SidebarMenu>
                     <Collapsible

@@ -18,12 +18,13 @@ class Purchase extends Model
         'purchase_date',
     ];
 
-    public function material(){
-        return $this->belongsTo(Material::class, 'material_id');
-    }
 
     public function supplier(){
         return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    public function purchaseItems(){
+        return $this->hasMany(PurchaseItems::class, 'material_id');
     }
 
 

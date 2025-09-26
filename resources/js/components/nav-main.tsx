@@ -9,7 +9,7 @@ function NavMain({items = []} : {items : NavItem[]}) {
 
   return (
         <SidebarGroup className="px-2 py-0">
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+        {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
         <SidebarGroupContent>
             <SidebarMenu>
                 {
@@ -23,7 +23,7 @@ function NavMain({items = []} : {items : NavItem[]}) {
                                 >
                                     <Link href={item.href} prefetch>
                                         {item.icon && <item.icon className="mr-2" />}
-                                        <span>Dashboard</span>
+                                        <span>{item.title}</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>

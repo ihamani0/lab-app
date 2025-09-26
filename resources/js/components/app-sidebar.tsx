@@ -9,9 +9,18 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
+    Box,
+    HeartPulse,
     Hospital,
     LayoutGrid,
+    Package,
+    ShoppingBag,
+    ShoppingCart,
+    Stethoscope,
+    Tag,
+    Truck,
     UserCircle,
+    Wrench,
 } from "lucide-react";
 
 import { Link } from "@inertiajs/react";
@@ -26,7 +35,7 @@ import NavUser from "./nav-user";
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: "/",
+        href: "/dashboard",
         icon: LayoutGrid,
     },
 ];
@@ -35,19 +44,53 @@ const secondaryNavItems: NavItem[] = [
     {
         title: 'Patients',
         href: "/patients",
-        icon: Hospital,
+        icon: HeartPulse,
     },
     {
         title: 'Doctors',
         href: "/doctors",
-        icon: UserCircle,
+        icon: Stethoscope,
     },
+        {
+        title: 'Technicien',
+        href: "/techniciens",
+        icon: Wrench,
+    },
+]
+
+const InventoryNavItems: NavItem[] = [
+    {
+        title: 'Categories',
+        href: "/categories",
+        icon: Tag,
+    },
+    {
+        title: 'Brands',
+        href: "/brands",
+        icon: ShoppingBag,
+    },
+    {
+        title: 'Materials',
+        href: "/materials",
+        icon: Box,
+    },
+    {
+        title: 'Suppliers',
+        href: "/suppliers",
+        icon: Truck,
+    },
+    {
+        title: 'Purchases',
+        href: "/purchases",
+        icon: ShoppingCart,
+    },
+
 ]
 
 
 export function AppSidebar() {
     return (
-        <Sidebar variant="floating" collapsible="icon">
+        <Sidebar variant="inset" collapsible="icon">
             <Header />
 
             <SidebarContent>
@@ -57,8 +100,12 @@ export function AppSidebar() {
 
                 {/* --------------------------------------------------- */}
 
-                <NavCollapsible icon={UserCircle} titleCollapsible="Humen Resource" >
+                <NavCollapsible icon={Hospital} titleCollapsible="Human Resource" >
                     <NavMain  items={secondaryNavItems}  />
+                </NavCollapsible>
+
+                <NavCollapsible icon={Package} titleCollapsible="Inventory" >
+                    <NavMain  items={InventoryNavItems}  />
                 </NavCollapsible>
 
                 {/* --------------------------------------------------- */}

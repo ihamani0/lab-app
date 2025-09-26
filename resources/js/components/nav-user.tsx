@@ -12,8 +12,13 @@ import {
 import { ChevronsUpDown } from 'lucide-react';
 import UserInfo from './user-info';
 import UserMenuContent from './user-menu-content';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 function NavUser() {
+
+    const { state} = useSidebar();
+    const isMobile = useIsMobile();
+
   return (
     <SidebarMenu>
         <SidebarMenuItem>
@@ -32,7 +37,9 @@ function NavUser() {
                     <DropdownMenuContent
                         className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
                         align="end"
-                        side='bottom'
+                        side={
+                            isMobile ? 'bottom' : state ==='collapsed' ? 'left' : 'bottom'
+                        }
                     >
                     {/* <UserInfo user={user} showEmail={true} /> */}
                         <UserMenuContent />

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\HumenResource;
 
 use App\Http\Resources\DoctorResource;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PatientResource;
+
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Http\Request;
@@ -51,13 +51,7 @@ class PatientController extends Controller
             ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -76,22 +70,7 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+ 
 
     /**
      * Update the specified resource in storage.

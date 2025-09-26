@@ -9,7 +9,7 @@ import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/compo
 import {Sheet, SheetClose,SheetContent,SheetDescription, SheetFooter,SheetHeader,SheetTitle,SheetTrigger} from "@/components/ui/sheet"
 import { Label } from "@/components/ui/label";
 import { Pen, Plus, Trash, User } from "lucide-react";
-import { type BreadcrumbItem  , type Patient as PatientType , type Doctor as DoctorType} from "@/Types";
+import { type BreadcrumbItem  , type Patient as PatientType , type Doctor as DoctorType, FalshProps} from "@/Types";
 
 import debounce from 'lodash.debounce';
 
@@ -19,21 +19,22 @@ import {toast} from "sonner";
 import CreatePatientForm from "./CreatePatientForm";
 import AppLayout from "@/Layouts/AppLayout";
 
+import { type PaginationLink} from "@/Types";
+import Pagination from "@/components/pagination";
+import SearchInput from "@/components/search-inpute";
 
-
-
-type PaginationLink = {
-    url: string | null;
-    label: string;
-    active: boolean;
-};
 
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'patients Managment',
+        title: 'Dashboard',
         href: '/',
     },
+    {
+        title: 'patients Managment',
+        href: '/patients',
+    },
+
 ];
 
 
@@ -57,25 +58,20 @@ export default function patient({
     });
 
 
-    const [open, setOpen] = useState(false);
-
 
     const [editingPatient, setEditingPatient] = useState<PatientType | null>(null);
-
-
-    const { flash }  =  usePage().props ;
-
-
+    const { flash }  =  usePage<FalshProps>().props ;
 
     const [searchTerm, setSearchTerm] = useState('');
 
+
     const performSearch = useCallback((query : string) => {
         // In a real application, you would make an API call here
-
         if (query.length >= 4 || query.length === 0) {
             router.get("/patients", { search: query }, { preserveState: true, replace: true })
         }
     }, []);
+
     const debouncedSearch = useCallback(
         debounce((query) => performSearch(query), 500), // 500ms delay
         [performSearch]
@@ -131,7 +127,7 @@ export default function patient({
 
     return (
         <AppLayout  breadcrumbs={breadcrumbs}>
-        <Card>
+        <Card className="m-4">
             <CardHeader>
                 <CardTitle>Patient Management</CardTitle>
                 <CardDescription className="mt-2 text-sm xl:text-base ">
@@ -164,14 +160,9 @@ export default function patient({
                 <div className="space-y-6">
 
                     {/* Header with search + create */}
-                    <div className="flex items-center justify-between">
-                        <Input
-                            placeholder="Search patients..."
-                            value={searchTerm}
-                            onChange={handleChange}
-                            className="w-full sm:w-64 md:w-80"
-                        />
-                    </div>
+
+
+                    {/* <SearchInput  value={searchTerm} onChange={handleChange} /> */}
 
 
 
@@ -308,28 +299,7 @@ export default function patient({
                 </div>
             </CardContent>
             <CardFooter className="flex justify-end">
-                <div className="flex justify-center gap-2 mt-4">
-                    {patients.links.map((link, i) =>
-                        link.url ? (
-                            <Link
-                                key={i}
-                                href={link.url}
-                                className={`px-3 py-1 rounded-md text-sm ${
-                                    link.active
-                                        ? "bg-primary text-white"
-                                        : "bg-muted text-foreground"
-                                }`}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
-                        ) : (
-                            <span
-                                key={i}
-                                className="px-3 py-1 rounded-md text-sm text-muted-foreground"
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
-                        )
-                    )}
-                </div>
+                <Pagination  links={patients.links}/>
             </CardFooter>
         </Card>
         </AppLayout>

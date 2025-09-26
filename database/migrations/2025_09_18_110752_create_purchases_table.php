@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_id')->constrained('materials')->noActionOnDelete();
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->noActionOnDelete();
-            $table->integer('quantity');
-            $table->decimal('unit_price', 10, 2);
-            $table->decimal('total_price', 10, 2);
-            $table->integer('discount_percentage')->nullable();
-            $table->decimal('discount_amount', 10, 2)->nullable();
+            $table->string('invoice_number')->nullable();
             $table->date('purchase_date');
+            $table->decimal('total_amount', 12, 2)->default(0);
+            $table->decimal('discount_amount', 12, 2)->default(0);
+            $table->decimal('net_amount', 12, 2)->default(0);
             $table->timestamps();
         });
     }

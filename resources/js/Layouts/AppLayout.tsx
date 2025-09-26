@@ -21,7 +21,7 @@ export default function AppLayout({children , breadcrumbs = []} : { children: Re
     return (
         <AppRoot open={true}>
             <AppSidebar />
-            <AppContent>
+            <AppContent variant="sidebar" className="overflow-x-hidden">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
 
                 {children}

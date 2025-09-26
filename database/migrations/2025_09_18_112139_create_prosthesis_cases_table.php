@@ -15,15 +15,21 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->noActionOnDelete();
             $table->string('doctor_id')->constrained('doctors')->noActionOnDelete();
+
             $table->foreignId('technician_id')->nullable()->constrained('users')->nullOnDelete();
+
             $table->string('assistant')->nullable();
             $table->string('description')->nullable(); // crown, bridge, etc
             $table->date('received_date')->nullable();
             $table->date('delivered_date')->nullable();
-            $table->decimal('total_price', 10, 2)->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'delivered'])->default('pending');
 
-            $table->timestamps();
+
+
+            $table->decimal('total_price', 12, 2)->nullable();    // what you charge the clinic/patient
+            $table->decimal('materials_cost', 12, 2)->default(0); // sum of consumption costs for this case
+            $table->decimal('profit', 12, 2)->default(0);
+            $table->enum('status', ['pending','in_progress','delivered'])->default('pending');
+                $table->timestamps();
         });
     }
 

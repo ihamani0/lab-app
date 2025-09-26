@@ -4,6 +4,7 @@ import {DropdownMenuGroup,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparat
 } from '@/components/ui/dropdown-menu';
 import  UserInfo  from '@/components/user-info';
 import { LogOut, Settings } from 'lucide-react';
+import ThemeToggle from './theme-toggle';
 
 
 function UserMenuContent() {
@@ -45,6 +46,9 @@ function UserMenuContent() {
                     <LogOut className="mr-2" />
                     Log out
                 </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+                <ThemeToggle />
             </DropdownMenuItem>
 
     </>
