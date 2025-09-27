@@ -3,28 +3,40 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Purchase extends Model
 {
+    use SoftDeletes;
     //
     protected $fillable =[
-        'material_id',
         'supplier_id',
-        'quantity',
-        'unit_price',
-        'total_price',
-        'discount_percentage',
-        'discount_amount',
-        'purchase_date',
+        "invoice_number",
+        "purchase_date",
+        "status",
+
+        "subtotal_amount",
+        "discount_amount",
+        "tax_amount",
+        "net_amount",
+
+        "paid_amount",
+        "payment_status",
+
     ];
 
-
+    // 🔗 Relationships
     public function supplier(){
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
     public function purchaseItems(){
         return $this->hasMany(PurchaseItems::class, 'material_id');
+    }
+
+        public function payments()
+    {
+        return $this->hasMany(PurchasePayment::class);
     }
 
 

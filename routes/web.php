@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\HumenResource\TechnicienController;
 use App\Http\Controllers\Admin\Inventory\BrandsController;
 use App\Http\Controllers\Admin\Inventory\CategorieController;
 use App\Http\Controllers\Admin\Inventory\MaterialsController;
+use App\Http\Controllers\Admin\Inventory\PurchasesController;
 use App\Http\Controllers\Admin\Inventory\SuppliersController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,8 @@ Route::post('/materials/{id}/undo', [MaterialsController::class, 'undoStock']);
 Route::resource('suppliers',SuppliersController::class)->except(['create' , 'show' ,'edit']);
 
 
+// For suppliers
+Route::resource('purchases',PurchasesController::class);
 
 // Route::middleware(['role:super-admin', 'active'])
 //     ->prefix('admin')
