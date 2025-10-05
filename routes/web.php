@@ -8,7 +8,9 @@ use App\Http\Controllers\Admin\Inventory\CategorieController;
 use App\Http\Controllers\Admin\Inventory\MaterialsController;
 use App\Http\Controllers\Admin\Inventory\PurchasesController;
 use App\Http\Controllers\Admin\Inventory\SuppliersController;
+use App\Http\Controllers\Admin\Stock\StockController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/' , function(){
     return redirect()->route('dashboard');
@@ -71,6 +73,14 @@ Route::resource('suppliers',SuppliersController::class)->except(['create' , 'sho
 
 // For suppliers
 Route::resource('purchases',PurchasesController::class);
+Route::get('/purchases/{purchase}/invoice/download', [PurchasesController::class, 'downloadInvoice']) ->name('purchases.invoice.download');
+
+
+Route::resource('/stock' , StockController::class);
+Route::get('/stock-movement' , [StockController::class , 'stock_movment'])->name('stock.stock_movment');
+
+
+
 
 // Route::middleware(['role:super-admin', 'active'])
 //     ->prefix('admin')

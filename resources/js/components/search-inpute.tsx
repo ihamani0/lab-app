@@ -3,20 +3,21 @@ import { Input } from "./ui/input"
 import { Search } from "lucide-react"
 
 type Props = {
-    defaultValue : string ,
+    defaultValue ?: string ,
     handleChange : (e : React.ChangeEvent<HTMLInputElement>) => void
     searchTerm : string
+    placeholder ?: string
 }
 
 
-function SearchInput({searchTerm , handleChange , defaultValue} : Props) {
+function SearchInput({searchTerm , handleChange , defaultValue ,             placeholder="Search..."} : Props) {
   return (
-        <div className="relative mb-5">
+        <div className="relative ">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 pointer-events-none" />
         <Input
             defaultValue={defaultValue}
             type="search"
-            placeholder="Search..."
+            placeholder={placeholder}
             value={searchTerm}
             onChange={handleChange}
             aria-label="Search patients"

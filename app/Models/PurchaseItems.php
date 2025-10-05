@@ -11,21 +11,33 @@ class PurchaseItems extends Model
     protected $fillable =[
         'purchase_id',
         'material_id',
-        'ordered_quantity',
         'received_quantity',
         'remaining_quantity', // calcula auto
+        'discount_amount', // calcula auto
+        'tax_amount', // cacule auto
+        'total_price', // calcule auto
+
+        'ordered_quantity',//from user
         'unit_price', //from user
         'discount_percentage', //from user
-        'discount_amount', // calcula auto
         'tax_percentage', // from user
-        'tax_amount', // cacule auto
-        'total_price', // cacule auto
         'batch_number', //from user
         'expiry_date',//from user
     ];
 
 
-
+    protected $casts = [
+    'ordered_quantity'   => 'float',
+    'unit_price'         => 'float',
+    'discount_percentage'=> 'float',
+    'tax_percentage'     => 'float',
+    'discount_amount'    => 'float',
+    'tax_amount'         => 'float',
+    'total_price'        => 'float',
+    'received_quantity'  => 'float',
+    'remaining_quantity' => 'float',
+    'expiry_date'         => 'datetime',
+    ];
 
     public function material(){
         return $this->belongsTo(Material::class, 'material_id');
@@ -34,20 +46,5 @@ class PurchaseItems extends Model
         return $this->belongsTo(Purchase::class, 'purchase_id');
     }
 
-    protected static function booted(){
-        static::saving(function($item){
-            $subtotal = $item->unit_price * $item->ordered_quantity;
 
-            $item->discount_amount = $subtotal * ($item->discount_percentage / 100);
-
-            $item->tax_amount = ($subtotal - $item->discount_amount) * ($item->tax_percentage / 100);
-
-            $item->total_price = $subtotal - $item->discount_amount + $item->tax_amount;
-
-            // Auto-fill remaining quantity
-            if ($item->remaining_quantity === null) {
-                $item->remaining_quantity = $item->ordered_quantity - $item->received_quantity;
-            }
-        });
-    }
 }

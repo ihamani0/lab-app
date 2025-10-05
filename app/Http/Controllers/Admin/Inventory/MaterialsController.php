@@ -292,14 +292,14 @@ class MaterialsController extends Controller
 
 
     public function export(Request $request){
-    $format = $request->get('format', 'xlsx'); // default to xlsx
-    $fileName = 'materials_' . now()->format('Y_m_d_His');
+        $format = $request->get('format', 'xlsx'); // default to xlsx
+        $fileName = 'materials_' . now()->format('Y_m_d_His');
 
-    if ($format === 'csv') {
-        return Excel::download(new MaterialsExport, $fileName . '.csv');
-    }
+        if ($format === 'csv') {
+            return Excel::download(new MaterialsExport, $fileName . '.csv');
+        }
 
-    return Excel::download(new MaterialsExport, $fileName . '.xlsx');
+        return Excel::download(new MaterialsExport, $fileName . '.xlsx');
     }
 
 

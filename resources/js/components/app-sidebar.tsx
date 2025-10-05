@@ -9,7 +9,11 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
+    ArrowLeftRightIcon,
     Box,
+    Boxes,
+    BoxIcon,
+    Container,
     HeartPulse,
     Hospital,
     LayoutGrid,
@@ -87,6 +91,19 @@ const InventoryNavItems: NavItem[] = [
 
 ]
 
+const StockNavItems: NavItem[] = [
+    {
+        title : "Stock Interaction",
+        href : "/stock",
+        icon : Container
+    } ,
+    {
+        title : "Stock Movment",
+        href : "/stock-movement",
+        icon : ArrowLeftRightIcon
+    }
+]
+
 
 export function AppSidebar() {
     return (
@@ -107,6 +124,12 @@ export function AppSidebar() {
                 <NavCollapsible icon={Package} titleCollapsible="Inventory" >
                     <NavMain  items={InventoryNavItems}  />
                 </NavCollapsible>
+
+
+                <NavCollapsible icon={Boxes} titleCollapsible="Stock" >
+                    <NavMain  items={StockNavItems}  />
+                </NavCollapsible>
+
 
                 {/* --------------------------------------------------- */}
 

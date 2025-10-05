@@ -56,7 +56,9 @@ class Material extends Model implements HasMedia
     }
 
 
-
+    public function latestStockMovement(){
+        return $this->hasOne(StockMovement::class, 'material_id')->latestOfMany("movement_date");
+    }
 
 
     protected static function booted()

@@ -11,10 +11,10 @@ type Props ={
   error?: string | undefined  // ✅ Single error string (client or server combined before passing)
   required?: boolean
   type?: string
-  onChange: (value: string) => void // ✅ Accepts the new value
+  onChangeEvent: (value: string) => void // ✅ Accepts the new value
   className?: string // ✅ Optional for extra styling
 
-}
+}  & React.InputHTMLAttributes<HTMLInputElement>;
 
 function FormField({
     name,
@@ -24,7 +24,7 @@ function FormField({
     error,
     required,
     type = "text",
-    onChange,
+    onChangeEvent,
     className,
     ...props // ✅ For any extra Input props (e.g., disabled, autoComplete, etc.)
 } : Props) {
@@ -39,7 +39,7 @@ function FormField({
           type={type}
           placeholder={placeholder}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChangeEvent(e.target.value)}
 
           className={cn(
           "py-5",

@@ -18,14 +18,13 @@ return new class extends Migration
             $table->integer('quantity'); // + for purchase, - for consumption
 
 
-            $table->string('batch_number')->nullable();
-            $table->date('expiry_date')->nullable();
+            $table->string('raison')->nullable();
 
-            
+
 
             $table->date('movement_date')->nullable();
 
-             $table->morphs('related'); // e.g. link to purchase_item, work_order, adjustment
+            //  $table->morphs('related'); // e.g. link to purchase_item, work_order, adjustment
 
 
             $table->timestamps();

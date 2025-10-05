@@ -1,11 +1,18 @@
 import { LucideIcon } from "lucide-react";
 
+
+
+
 export interface FiltersQuery  {
-        search ?: string
-        category_id ?: string
-        brand_id ?: string
-        sort_by ?: string
-        unit?:string
+        search ?: string;
+        category_id ?: string;
+        brand_id ?: string;
+        supplier_id?:string;
+        sort_by ?: string;
+        unit?:string;
+        status?:string;
+        type ?:string;
+        
     }
 
 export interface User {
@@ -160,3 +167,62 @@ export interface Suppiler {
     updated_at: string;
 }
 
+export interface Purchase {
+    id : string | number
+    supplier : Suppiler;
+    invoice_number : string ;
+    purchase_date : string ;
+    status : string ;
+    subtotal_amount : number;
+    discount_amount : number;
+    tax_amount : number;
+    paid_amount : number;
+    paid_amount : number;
+    net_amount:number
+    payment_status : string  ;
+    currency:string ;
+    invoice_url:string ;
+    created_at : string ;
+    updated_at : string;
+    purchase_items :PurchaseItems[]
+}
+
+export interface PurchaseItems {
+        material : Product
+        ordered_quantity : number;
+        received_quantity : number ;
+        remaining_quantity  : number ;
+        unit_price  : number ;
+        discount_percentage  : number ;
+        discount_amount  : number ;
+        tax_percentage : number ;
+        tax_amount : number ;
+        total_price  : number ;
+        batch_number : string ;
+        expiry_date : string ;
+}
+
+
+
+export interface Stock {
+    id: number;
+    sku ?: string;
+    ref ?: string ;
+    lot ?:string;
+    name: string;
+    min_stock:string;
+    quantity : string ;
+    stock_movements : StockMovment;
+
+}
+
+export interface StockMovement {
+        id: number;
+        material : Product;
+        type : "purchase_in" | "consumption_out" | "adjustment" ; //
+        quantity: string ;
+        movement_date ?: string;
+        raison?:string;
+        last_move_date ?: string;
+        last_move ?: string ;
+}

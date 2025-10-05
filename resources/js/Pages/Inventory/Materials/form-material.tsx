@@ -106,7 +106,7 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
         value={form.data.name}
         error={clientErrors?.name || form.errors?.name}
         required
-        onChange={(value) => {
+        onChangeEvent={(value) => {
           form.setData("name", value)
           setClientErrors((prev) => ({ ...prev, name: "" }))
         }}
@@ -131,7 +131,7 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
             value={form.data.stock_quantity}
             error={clientErrors?.stock_quantity || form.errors?.stock_quantity}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("stock_quantity", value)
                 setClientErrors((prev) => ({ ...prev, stock_quantity: "" }))
             }}
@@ -143,7 +143,7 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
             value={form.data.unit}
             error={clientErrors?.unit || form.errors?.unit}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("unit", value)
                 setClientErrors((prev) => ({ ...prev, unit: "" }))
             }}
@@ -152,29 +152,31 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
 
       {/* Min stock */}
       <div className="flex items-center justify-between gap-x-2">
+        
             <FormField
             name="price"
             label="Price of the products"
             placeholder="Price..."
             value={form.data.price}
             error={clientErrors?.price || form.errors?.price}
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("price", value)
                 setClientErrors((prev) => ({ ...prev, price: "" }))
             }}
             />
-        <FormField
-            name="min_stock"
-            label="Minimal Stock Quantity"
-            placeholder="Minimal quantity..."
-            value={form.data.min_stock}
-            error={clientErrors?.min_stock || form.errors?.min_stock}
-            required
-            onChange={(value) => {
-                form.setData("min_stock", value)
-                setClientErrors((prev) => ({ ...prev, min_stock: "" }))
-            }}
-            />
+
+            <FormField
+                name="min_stock"
+                label="Minimal Stock Quantity"
+                placeholder="Minimal quantity..."
+                value={form.data.min_stock}
+                error={clientErrors?.min_stock || form.errors?.min_stock}
+                required
+                onChangeEvent={(value) => {
+                    form.setData("min_stock", value)
+                    setClientErrors((prev) => ({ ...prev, min_stock: "" }))
+                }}
+                />
         </div>
 
       {/* Category */}

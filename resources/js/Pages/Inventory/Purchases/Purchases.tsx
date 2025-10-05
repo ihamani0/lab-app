@@ -1,5 +1,5 @@
 import AppLayout from "@/Layouts/AppLayout"
-import { BreadcrumbItem, type Category as CategoryType, FalshProps } from "@/Types"
+import { BreadcrumbItem, type Purchase as PurchaseType, FalshProps, FiltersQuery, Suppiler, Product } from "@/Types"
 import { type PaginationLink} from "@/Types";
 import { Link, usePage } from "@inertiajs/react";
 import { useEffect } from "react";
@@ -14,12 +14,17 @@ import SearchInput from "@/components/search-inpute";
 import { useDebouncedSearch } from "@/hooks/use-debouncedSearch";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import DataPurchase from "./data-purchase";
+import FilterPurchase from "./filter-purchase";
 
 
 
 
-type CategoryProps = {
-    categories :  { data: CategoryType[]; links: PaginationLink[] }
+type Props = {
+    purchases :  { data: PurchaseType[]; links: PaginationLink[] }
+    filters : FiltersQuery;
+    suppliers : Suppiler[];
+    materials : Product[]
 }
 
 
@@ -36,7 +41,7 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 
 
-function Categories({categories} : CategoryProps) {
+function Categories({purchases , filters , suppliers , materials} : Props) {
 
     const { flash }  =  usePage<FalshProps>().props ;
 
@@ -76,16 +81,16 @@ function Categories({categories} : CategoryProps) {
 
                     <CardContent>
                         {/* Search inpute */}
-                        <SearchInput
-                            handleChange={(e) => handleSearchChange(e.target.value)}
-                            searchTerm={searchTerm}
-                            defaultValue=""
+                        <FilterPurchase
+                        filters={filters}
+                        suppliers={suppliers}
+
                         />
                         {/* Table */}
-                        {/* <DataCategory categories={categories.data} /> */}
+                        <DataPurchase purchases={purchases.data} suppliers={suppliers} materials={materials} />
                     </CardContent>
                     <CardFooter className="flex justify-end">
-                            {/* <Pagination  links={categories.links}/> */}
+                            <Pagination  links={purchases.links}/>
                     </CardFooter>
                     </Card>
 
