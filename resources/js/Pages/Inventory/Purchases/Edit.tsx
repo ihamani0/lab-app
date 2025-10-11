@@ -178,28 +178,6 @@ export default function PurchaseEdit({ suppliers, materials, purchase }: PropsTy
               </Select>
             </div>
 
-            {/*
-            Payment Status
-
-            <div className="space-y-2">
-            <Label>Payment Status</Label>
-            <Select
-                value={form.data.payment_status}
-                onValueChange={(val) => form.setData("payment_status", val)}
-            >
-                <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select payment status" />
-                </SelectTrigger>
-                <SelectContent>
-                {PAYMENT_STATUS.map((status) => (
-                    <SelectItem key={status.value} value={status.value}>
-                    {status.name}
-                    </SelectItem>
-                ))}
-                </SelectContent>
-            </Select>
-            </div> */}
-
             {/* Invoice Date */}
             <div className="space-y-2 w-full">
               <Label>Purchase Date</Label>

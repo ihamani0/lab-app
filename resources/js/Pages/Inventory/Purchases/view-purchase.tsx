@@ -17,7 +17,6 @@ import { BadgeInfo, EyeIcon } from "lucide-react"
 
 export default function ViewPurchase({purchase} : {purchase : Purchase}) {
 
-    console.log(purchase)
   return (
     <Dialog>
         <DialogTrigger asChild>

@@ -23,18 +23,18 @@ class DoctorController extends Controller
         }
 
         $doctors = $query->orderBy('id', 'desc')
-                                ->paginate(10)
-                                    ->appends($request->only('search'))
-                                        ->through(fn ($doctor) => [
-                                            'id'     => $doctor->id,
-                                            'name'   => $doctor->name,
-                                            'address' => $doctor->address,
-                                            'phone' => $doctor->phone,
-                                            'email' => $doctor->email,
-                                            'cabine' => $doctor->cabine,
-                                            'create' => $doctor->created_at->format('d/m/Y'),
-                                            'update' => $doctor->updated_at ? $doctor->updated_at->format('d/m/Y') : null,
-                                        ]);
+                    ->paginate(10)
+                    ->appends($request->only('search'))
+                    ->through(fn ($doctor) => [
+                    'id'     => $doctor->id,
+                    'name'   => $doctor->name,
+                    'address' => $doctor->address,
+                    'phone' => $doctor->phone,
+                    'email' => $doctor->email,
+                    'cabine' => $doctor->cabine,
+                    'create' => $doctor->created_at->format('d/m/Y'),
+                    'update' => $doctor->updated_at ? $doctor->updated_at->format('d/m/Y') : null,
+                ]);
 
          return Inertia::render('Doctor/doctor' , [ "doctors" => $doctors ]);
     }

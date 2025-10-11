@@ -10,11 +10,13 @@ class StockMovement extends Model
         'material_id' , 'type' , 'quantity' , 'raison' ,  'movement_date' , 'related'
     ];
 
+
+
     public function Material(){
         return $this->belongsTo(Material::class , "material_id" );
     }
 
-    
+
 
 
 

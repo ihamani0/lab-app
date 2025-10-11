@@ -12,7 +12,10 @@ export interface FiltersQuery  {
         unit?:string;
         status?:string;
         type ?:string;
-        
+
+        doctor_id ?:string
+        technician_id ?:string
+
     }
 
 export interface User {
@@ -125,6 +128,8 @@ type UnitType = 'piece' | 'gram' | 'ml' | 'disk' | string;
 interface Product {
         id : string ;
         sku: string | null;
+        ref: string | null;
+        lot: string | null;
         name: string;
         description?: string | null;
         image?: File | string | null;
@@ -221,8 +226,50 @@ export interface StockMovement {
         material : Product;
         type : "purchase_in" | "consumption_out" | "adjustment" ; //
         quantity: string ;
-        movement_date ?: string;
+        movement_date ?: string | Date;
         raison?:string;
         last_move_date ?: string;
         last_move ?: string ;
+}
+
+
+type statusCase = "pending" |"delivered" |"in_progress" | "completed" | "on_hold" | "cancelled"
+
+export interface Case {
+    id : string | number;
+    case_number :string,
+    patient : Patient,
+    doctor : Doctor ,
+    technician : User ,
+    assistant ?:string ,
+    description ?:string ,
+    received_date ?: string ,
+    delivered_date ?: string ,
+    total_cost ?:string ,
+    paid_amount ?: string ,
+    status: statusCase,
+    notes ?:string;
+    case_items : CaseItems[];
+
+}
+
+export interface CaseItems {
+    id : string | number;
+    service : Service;
+    tooth_number : string ;
+    description : string ;
+    shade : string ;
+    disk_type : string ;
+    quantity : string ;
+    unit_price : string ;
+    status : statusCase ;
+}
+
+
+
+export interface Service {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
 }

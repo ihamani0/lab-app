@@ -63,7 +63,7 @@ function FormTechnicien({technicien , method , action} : Props) {
             value={form.data.name}
             error={clientErrors?.name || form.errors?.name}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("name", value)
                 setClientErrors(prev => ({ ...prev, name: "" }))
             }}
@@ -77,7 +77,7 @@ function FormTechnicien({technicien , method , action} : Props) {
             value={form.data.email}
             type="email"
             error={clientErrors?.email || form.errors?.email}
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("email", value)
             }}
         />
@@ -85,7 +85,7 @@ function FormTechnicien({technicien , method , action} : Props) {
 
         {/* is_active */}
 
-  
+
 
       {/* Submit */}
       <Button type="submit" className="w-full cursor-pointer py-5"  disabled={form.processing}>

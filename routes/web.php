@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Case\CaseController;
 use App\Http\Controllers\Admin\HumenResource\PatientController;
 use App\Http\Controllers\Admin\HumenResource\DoctorController;
 use App\Http\Controllers\Admin\HumenResource\TechnicienController;
@@ -77,9 +78,23 @@ Route::get('/purchases/{purchase}/invoice/download', [PurchasesController::class
 
 
 Route::resource('/stock' , StockController::class);
-Route::get('/stock-movement' , [StockController::class , 'stock_movment'])->name('stock.stock_movment');
+Route::get('/movement-stock' , [StockController::class , 'stock_movment'])->name('stock.stock_movment');
 
 
+
+
+Route::resource('/prosthesis-case' , CaseController::class);
+
+Route::post('/prosthesis-case/{prosthesis_case}/generate-invoice', [CaseController::class, 'generateInvoice'])->name('invoice.generate');
+
+Route::get('/prosthesis-case/{case_invoice}/download-invoice' , [CaseController::class , 'downloadInvoice'])->name('invoices.download');
+
+
+// Route::get();
+
+
+
+///prosthesis-consumption   //prosthesis-service ///prosthesis-invoice
 
 
 // Route::middleware(['role:super-admin', 'active'])

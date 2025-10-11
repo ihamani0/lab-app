@@ -1,29 +1,15 @@
-import {
-  XCircle,
-  CheckCircle2,
-  Clock,
-  FileText,
-
-  CircleCheckBig,
-  AlertCircle,
-  CalendarIcon,
-  Send,
-  Recycle,
+import {XCircle,Clock,FileText,CircleCheckBig,AlertCircle,CalendarIcon,Send,Recycle, Truck, Timer, CheckCheck, PauseCircle,
 } from "lucide-react";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-
-import { router } from "@inertiajs/react";
-
+import {Tooltip,TooltipContent,TooltipTrigger,} from "@/components/ui/tooltip"
 import { useDebouncedSearch } from "@/hooks/use-debouncedSearch";
 import SearchInput from "@/components/search-inpute";
 import SelectField from "@/components/select-field";
 import { Button } from "@/components/ui/button";
-import { FiltersQuery, Purchase as PurchaseType, Suppiler as SuppilerType } from "@/Types";
+import { router } from "@inertiajs/react";
+import { format } from "date-fns";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
+import { Doctor, FiltersQuery, Patient, User as techniciansType } from "@/Types";
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -31,79 +17,89 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { format } from "date-fns";
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
+import { Label } from "@/components/ui/label";
 
 
 type Props = {
-    purchase ?:   PurchaseType[]
-    suppliers : SuppilerType[]
+    doctors : Doctor[];
+    technicians : techniciansType[];
     filters : FiltersQuery
 }
 
-const statusPurchas = [
-  { id: "unpaid", name: "Unpaid", icon: Clock },         // waiting
-  { id: "paid", name: "Paid", icon: CheckCircle2 },      // success
-  { id: "partial", name: "Partial", icon: AlertCircle }, // warning / partially done
-  { id: "darft", name: "Darft", icon: FileText },        // draft document
-  { id: "cancelled", name: "Cancelled", icon: XCircle }, // red cancel
-  { id: "confirmed", name: "confirmed", icon: CircleCheckBig }, // big green check
-  { id: "received", name: "received", icon: CircleCheckBig }, // big green check
-];
+
+const statusCase = [
+  { id: "pending", name: "Pending", icon: Clock },
+  { id: "completed", name: "Completed", icon: CheckCheck },
+  { id: "delivered", name: "Delivered", icon: Truck },
+  { id: "in_progress", name: "In Progress", icon: Timer },
+  { id: "canceled", name: "Cancelled", icon: XCircle },
+  { id: "on_hold", name: "On Hold", icon: PauseCircle },
+]
 
 
-export default function FilterPurchase({suppliers , filters} : Props) {
+export default function FilterCase({doctors , technicians , filters} : Props) {
+
 
     const { searchTerm , handleSearchChange } = useDebouncedSearch({
-            route : '/purchases',
+            route : '/prosthesis-case',
     })
 
     const [dateRange, setDateRange] = useState<DateRange | undefined>();
-    const [supplier , setSupplier] = useState<string | undefined>();
+    const [doctor , setDoctor] = useState<string | undefined>();
+    const [technician , setTechnician] = useState<string | undefined>();
     const [status , setStatus] = useState<string | undefined>();
 
-
-
     const submitFilter = ()=>{
-        router.get('/purchases' , {
+        router.get('/prosthesis-case' , {
                 search : searchTerm ,
-                supplier : supplier ,
+                doctor : doctor ,
+                technician : technician ,
                 status:status,
                 date_from : dateRange?.from?.toISOString() ,
                 date_to : dateRange?.to?.toISOString() ,
         });
     }
 
-
-
   return (
         <div className="flex items-center gap-2  mb-5 ">
             <div >
-                <Select value={filters.supplier_id || supplier || ""}
-                onValueChange={(val)=>setSupplier(val)}
+                <Select value={filters.doctor_id || doctor || ""}
+                onValueChange={(val)=>setDoctor(val)}
                 >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Supplier" />
+                        <SelectValue placeholder="Doctor" />
                     </SelectTrigger>
                     <SelectContent>
-                        {suppliers.map((sup) => (
-                        <SelectItem key={sup.id}  value={sup.id.toString()}>{sup.name}</SelectItem>
+                        {doctors.map((d) => (
+                        <SelectItem key={d.id}  value={d.id.toString()}>{d.name}</SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
             </div>
 
+            <div>
+                <Select value={filters.technician_id || technician || ""}
+                onValueChange={(val)=>setTechnician(val)}
+                >
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Technician" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {technicians.map((t) => (
+                        <SelectItem key={t.id}  value={t.id.toString()}>{t.name}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
 
-        <SelectField
-            options={statusPurchas}
-            onValueChange={(value) =>setStatus(value)}
-            value={filters.status || status || ""}
-            placeholder="Sort by"
-        />
+            <SelectField
+                options={statusCase}
+                onValueChange={(value) =>setStatus(value)}
+                value={filters.status || status || ""}
+                placeholder="Sort by"
+            />
 
-        {/* Filter with Day */}
-
+            {/* Filter with Day */}
             <div className=" w-full">
                 <Popover>
                 {/* I avoid asChild here to avoid ref-forwarding issues */}
@@ -125,7 +121,7 @@ export default function FilterPurchase({suppliers , filters} : Props) {
                             format(dateRange.from, "MMM d, yyyy")
                         )
                         ) : (
-                        "Pick a date range"
+                        "Pick a date Recived Date"
                         )}
                     </span>
                 </Button>
@@ -158,16 +154,13 @@ export default function FilterPurchase({suppliers , filters} : Props) {
         />
 
 
-
-
-
         <div className="flex gap-1 items-center">
             <Tooltip>
                 <TooltipTrigger>
                     <Button
                         className="cursor-pointer"
                         variant="destructive"
-                        onClick={() => router.get("/purchases")}
+                        onClick={() => router.get("/prosthesis-case")}
                         >
                         <Recycle />
                     </Button>
@@ -192,7 +185,6 @@ export default function FilterPurchase({suppliers , filters} : Props) {
             </Tooltip>
         </div>
 
-
-    </div>
+        </div>
   )
 }

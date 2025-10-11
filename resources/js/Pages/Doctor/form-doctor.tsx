@@ -62,7 +62,7 @@ function FormDoctor({doctor , method , action} : Props) {
             value={form.data.name}
             error={clientErrors?.name || form.errors?.name}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("name", value)
                 setClientErrors(prev => ({ ...prev, name: "" }))
             }}
@@ -75,7 +75,7 @@ function FormDoctor({doctor , method , action} : Props) {
             placeholder="Phone Number"
             value={form.data.phone}
             error={clientErrors?.phone || form.errors?.phone}
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("phone", value)
             }}
         />
@@ -87,7 +87,7 @@ function FormDoctor({doctor , method , action} : Props) {
             value={form.data.email}
             type="email"
             error={clientErrors?.email || form.errors?.email}
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("email", value)
             }}
         />
@@ -99,7 +99,7 @@ function FormDoctor({doctor , method , action} : Props) {
             placeholder="Address"
             value={form.data.address}
             error={clientErrors?.address || form.errors?.address}
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("address", value)
             }}
         />
@@ -113,7 +113,7 @@ function FormDoctor({doctor , method , action} : Props) {
                 value={form.data.cabine}
 
                 error={clientErrors?.cabine || form.errors?.cabine}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("cabine", value)
                 }}
             />

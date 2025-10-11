@@ -25,7 +25,7 @@ const breadcrumbs : BreadcrumbItem[] = [
     },
     {
     title: 'Stock Managment',
-    href: '/stock',
+    href: '/movement-stock',
     }
 ];
 
@@ -48,9 +48,9 @@ export default function StockMovement({stock_movement , filters} : Props) {
     <AppLayout  breadcrumbs={breadcrumbs}>
         <Card className="m-4">
                     <CardHeader>
-                        <CardTitle>Category Management</CardTitle>
+                        <CardTitle>Stock Movement Log</CardTitle>
                         <CardDescription className="mt-2 text-sm xl:text-base">
-                            Here you can add, remove, update all Category .
+                            Here you can see the movement of the stock .
                         </CardDescription>
                         <Separator className="mt-2" />
                         <CardAction>

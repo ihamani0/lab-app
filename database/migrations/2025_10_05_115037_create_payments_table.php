@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('prosthesis_case_id')->constrained('prosthesis_cases')->cascadeOnDelete();
-            $table->foreignId('doctor_id')->constrained('doctors')->noActionOnDelete();
-            $table->decimal('amount', 10, 2);
+
+            $table->decimal('total_cost', 10, 2)->default(0); // auto-updated sum from case_items
+            $table->decimal('paid_amount', 10, 2)->default(0); // sum from payments
+            $table->enum('payment_status', ['unpaid', 'partial', 'paid'])->default('unpaid');
+
             $table->date('payment_date');
-            $table->enum('status', ['pending', 'paid'])->default('pending');
             $table->timestamps();
         });
     }

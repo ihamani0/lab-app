@@ -32,3 +32,31 @@ export function getBadgeVariantForPurchase(status : string)  {
       return 'secondary'; // fallback for unknown statuses
   }
 }
+
+//"pending" |"delivered" |"in_progress" | "completed" | "on_hold" | "cancelled"
+export function getBadgeVariantForCases(status : string)  {
+    switch (status) {
+        
+    case 'cancelled':
+      return 'destructive';
+
+    case 'on_hold':
+      return 'secondary';
+
+    case 'completed':
+      return 'success';
+
+    case 'delivered' :
+        return 'success';
+
+    case 'pending' :
+        return 'warning';
+
+    case 'in_progress' :
+        return 'thirdy';
+
+
+    default:
+      return 'secondary'; // fallback for unknown statuses
+  }
+}

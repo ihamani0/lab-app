@@ -13,23 +13,29 @@ return new class extends Migration
     {
         Schema::create('prosthesis_cases', function (Blueprint $table) {
             $table->id();
+            $table->string('case_number')->unique();
+
             $table->foreignId('patient_id')->constrained('patients')->noActionOnDelete();
-            $table->string('doctor_id')->constrained('doctors')->noActionOnDelete();
+            $table->foreignId('doctor_id')->constrained('doctors')->noActionOnDelete();
 
             $table->foreignId('technician_id')->nullable()->constrained('users')->nullOnDelete();
-
+            
             $table->string('assistant')->nullable();
+
             $table->string('description')->nullable(); // crown, bridge, etc
             $table->date('received_date')->nullable();
             $table->date('delivered_date')->nullable();
 
+            $table->decimal('total_cost', 10, 2)->default(0); // auto-updated sum from case_items
+            $table->decimal('paid_amount', 10, 2)->default(0); // sum from payments
+            $table->enum('payment_status', ['unpaid', 'partial', 'paid'])->default('unpaid');
 
 
-            $table->decimal('total_price', 12, 2)->nullable();    // what you charge the clinic/patient
-            $table->decimal('materials_cost', 12, 2)->default(0); // sum of consumption costs for this case
-            $table->decimal('profit', 12, 2)->default(0);
-            $table->enum('status', ['pending','in_progress','delivered'])->default('pending');
-                $table->timestamps();
+            $table->enum('status', [
+                'pending', 'in_progress', 'completed', 'delivered', 'on_hold', 'canceled'
+            ])->default('pending');
+            $table->text('notes')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -44,7 +44,7 @@ class PurchasesController extends Controller
 
             $query->where('purchase_date', $request->date_from);
         }else if ($request->filled('date_to')) {
-     $query->whereDate('purchase_date', $request->date_to);
+            $query->whereDate('purchase_date', $request->date_to);
         }
 
 
@@ -205,7 +205,7 @@ class PurchasesController extends Controller
 
 
         }catch(\Exception $e){
-            Log::error('Error updating purchase: ' . $e->getMessage());
+        Log::error('Error updating purchase: ' . $e->getMessage());
 
         return redirect()
             ->back()

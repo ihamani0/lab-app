@@ -1,6 +1,6 @@
 
 import AppLayout from "@/Layouts/AppLayout";
-import { BreadcrumbItem, FalshProps, PaginationLink, Stock as StockType } from "@/Types";
+import { BreadcrumbItem, FalshProps, FiltersQuery, PaginationLink, Stock as StockType } from "@/Types";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -9,9 +9,12 @@ import { Separator } from "@radix-ui/react-separator";
 import Pagination from "@/components/pagination";
 
 import DataStock from "./data-stock";
+import SearchInput from "@/components/search-inpute";
+import { useDebouncedSearch } from "@/hooks/use-debouncedSearch";
 
 type Props = {
-    Stocks : { data: StockType[]; links: PaginationLink[]}
+    Stocks : { data: StockType[]; links: PaginationLink[]} ;
+    filters : FiltersQuery;
 }
 
 
@@ -26,8 +29,12 @@ const breadcrumbs : BreadcrumbItem[] = [
     }
 ];
 
-export default function Stock({Stocks} : Props) {
+export default function Stock({Stocks , filters} : Props) {
     const { flash }  =  usePage<FalshProps>().props ;
+
+    const { searchTerm , handleSearchChange } = useDebouncedSearch({
+                    route : '/stock',
+        });
 
         // For sonner Toast mesage Flash
     useEffect(()=>{
@@ -51,7 +58,12 @@ export default function Stock({Stocks} : Props) {
                         </CardDescription>
                         <Separator className="mt-2" />
                         <CardAction>
-
+                            <SearchInput
+                                placeholder="Search by Sku , Name , Ref ..."
+                                handleChange={(e) => handleSearchChange(e.target.value)}
+                                searchTerm={searchTerm}
+                                defaultValue={filters.search || ""}
+                            />
                         </CardAction>
                     </CardHeader>
 

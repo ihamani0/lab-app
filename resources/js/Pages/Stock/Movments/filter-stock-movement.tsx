@@ -53,8 +53,7 @@ const typeStockMovement = [
 
 export default function FilterStockMovement({filters}:Props) {
     const { searchTerm , handleSearchChange } = useDebouncedSearch({
-                route : '/purchases',
-
+                route : '/movement-stock',
         });
 
 
@@ -63,7 +62,7 @@ export default function FilterStockMovement({filters}:Props) {
 
 
     const submitFilter = () => {
-        router.get('/stock-movement' , {
+        router.get('/movement-stock' , {
                 search : searchTerm ,
                 type : type ,
                 date_from : dateRange?.from?.toISOString() ,

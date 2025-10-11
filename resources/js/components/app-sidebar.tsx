@@ -13,7 +13,11 @@ import {
     Box,
     Boxes,
     BoxIcon,
+    ClipboardList,
+    ClipboardPlus,
+    Columns3,
     Container,
+    FileText,
     HeartPulse,
     Hospital,
     LayoutGrid,
@@ -99,10 +103,36 @@ const StockNavItems: NavItem[] = [
     } ,
     {
         title : "Stock Movment",
-        href : "/stock-movement",
+        href : "/movement-stock",
         icon : ArrowLeftRightIcon
     }
 ]
+
+
+const CaseNavItems: NavItem[] = [
+    {
+        title: "Case Management",
+        href: "/prosthesis-case",
+        icon: ClipboardList
+    },
+    {
+        title: "Services",
+        href: "/prosthesis-service",
+        icon: Wrench
+    },
+    {
+        title: "Materials Used",
+        href: "/prosthesis-consumption",
+        icon: Package
+    },
+    {
+        title: "Invoices",
+        href: "/prosthesis-invoice",
+        icon: FileText
+    }
+]
+
+//<Columns3 />
 
 
 export function AppSidebar() {
@@ -128,6 +158,12 @@ export function AppSidebar() {
 
                 <NavCollapsible icon={Boxes} titleCollapsible="Stock" >
                     <NavMain  items={StockNavItems}  />
+                </NavCollapsible>
+
+
+
+                <NavCollapsible icon={Columns3} titleCollapsible="Prosthesis" >
+                    <NavMain  items={CaseNavItems}  />
                 </NavCollapsible>
 
 

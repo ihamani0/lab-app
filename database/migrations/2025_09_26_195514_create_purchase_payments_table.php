@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('method')->nullable(); // cash, bank, transfer
             $table->string('reference')->nullable(); // cheque number, transaction id
             $table->text('note')->nullable();
-
-
             $table->timestamps();
         });
     }

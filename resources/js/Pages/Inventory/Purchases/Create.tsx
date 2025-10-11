@@ -216,7 +216,7 @@ export default function PurchaseCreate({ suppliers = [], materials = []  }:Props
             )}
         </div>
 
-                  {/* Invoice Date */}
+        {/* Invoice Date */}
         <div className="w-full space-y-3">
             <Label>Date Purchase (no selected = today)</Label>
             <Popover>
