@@ -12,11 +12,11 @@ export default defineConfig({
         tailwindcss(),
         react(),
     ],
-    server: {
-        host: '0.0.0.0', // Listen on all network interfaces
-        port: 5173,
-        hmr: {
-            host: "192.168.1.41", // Connect to the HMR server from the browser via localhost
-        },
-    },
+    // server: {
+    //     host: '0.0.0.0', // Listen on all network interfaces
+    //     port: 5173,
+    //     hmr: {
+    //         host: "192.168.1.41", // Connect to the HMR server from the browser via localhost
+    //     },
+    // },
 });

@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\Inventory\CategorieController;
 use App\Http\Controllers\Admin\Inventory\MaterialsController;
 use App\Http\Controllers\Admin\Inventory\PurchasesController;
 use App\Http\Controllers\Admin\Inventory\SuppliersController;
+use App\Http\Controllers\Admin\Prosthesis\ServiceController;
 use App\Http\Controllers\Admin\Stock\StockController;
+use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -90,7 +92,8 @@ Route::post('/prosthesis-case/{prosthesis_case}/generate-invoice', [CaseControll
 Route::get('/prosthesis-case/{case_invoice}/download-invoice' , [CaseController::class , 'downloadInvoice'])->name('invoices.download');
 
 
-// Route::get();
+
+Route::resource("/prosthesis-service" , ServiceController::class)->except(['create' , 'show' ,'edit']);;
 
 
 

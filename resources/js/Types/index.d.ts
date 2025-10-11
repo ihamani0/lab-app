@@ -269,6 +269,7 @@ export interface CaseItems {
 
 export interface Service {
     id: string;
+    service_number: string;
     name: string;
     description: string;
     price: number;

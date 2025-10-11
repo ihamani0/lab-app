@@ -1,3 +1,5 @@
+ 
+
 import './bootstrap';
 import "../css/app.css";
 
@@ -8,9 +10,8 @@ import MainLayout from './Layouts/MainLayout';
 
 createInertiaApp({
   resolve: (name) => {
-    const pages = import.meta.glob('./Pages/**/*.tsx', { eager: true })
+    const pages = import.meta.glob('./Pages/**/*.tsx', { eager: true }) 
     let page = pages[`./Pages/${name}.tsx`]
-
     page.default.layout = page.default.layout || ( (page: React.ReactNode) => <MainLayout children={page} /> );
 
     return page;

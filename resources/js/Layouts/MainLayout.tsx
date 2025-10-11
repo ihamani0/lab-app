@@ -13,11 +13,11 @@ export default function MainLayout({children} : Props) {
 
     return (
 
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="bg-background text-foreground min-h-screen ">
-            {children}
+             {children}
             </div>
-            </ThemeProvider>
+        </ThemeProvider>
 
     )
 

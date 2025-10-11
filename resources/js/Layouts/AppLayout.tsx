@@ -30,21 +30,6 @@ export default function AppLayout({children , breadcrumbs = []} : { children: Re
 
             </AppContent>
         </AppRoot>
-        // <div className="min-h-screen bg-background flex">
-
-        //     {/* Sidebar */}
-        //     {/* <AppSideBar isOpen={sidebarOpen} /> */}
-
-        //     {/* Main Content Area */}
-        //         <div className="flex flex-1 flex-col">
-        //             {/* Header / Top Bar */}
-        //             {/* <Header /> */}
-
-        //             {/* Actual Page Content */}
-        //             <main className="flex-1 p-6 overflow-auto">{children}</main>
-        //         </div>
-
-        // </div>
     )
 
 }
