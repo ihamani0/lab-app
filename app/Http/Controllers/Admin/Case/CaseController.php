@@ -26,10 +26,11 @@ class CaseController extends Controller
 
 
             if ($request->filled('search')) {
-                $search = strtolower($request->search);
+                $search = $request->search;
                 $query = $query->where(function ($q) use ($search){
-                        $q->where("case_number" , 'LIKE', "%{$search}%");
-                        $q->whereHas('patient' , function($patientQuery) use($search){
+                        $q->where('case_number', 'LIKE', "%CA-{$search}%")
+                            ->orWhere('case_number', 'LIKE', "%{$search}%");
+                        $q->orWhereHas('patient' , function($patientQuery) use($search){
                             $patientQuery->whereRaw('LOWER(name) LIKE ?' , ["%{$search}%"]);
                          });
                 });
@@ -120,7 +121,7 @@ class CaseController extends Controller
             "doctors" => $doctors ,
             "technicians" => $technicians ,
             "patients" => $patients ,
-            "filters" => $request->only(['serach' , 'doctor' , 'technician' , 'status' ])
+            "filters" => $request->only(['search' , 'doctor' , 'technician' , 'status' ])
         ]);
     }
 
@@ -212,14 +213,13 @@ class CaseController extends Controller
 
 
 
-
-
-        public function destory(string $id){
+        public function destroy(string $id){
             $prosthesis_case = ProsthesisCase::findOrFail($id);
             $prosthesis_case->delete();
 
             return redirect()->route('prosthesis-case.index')->with("success", "Case deleted successfully.");
         }
+
 
 
         public function generateInvoice(ProsthesisCase $prosthesis_case)
@@ -276,6 +276,11 @@ class CaseController extends Controller
             if (! $media) abort(404);
             return response()->download($media->getPath(), $media->file_name);
         }
+
+
+
+
+
 
     }
 

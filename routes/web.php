@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Inventory\CategorieController;
 use App\Http\Controllers\Admin\Inventory\MaterialsController;
 use App\Http\Controllers\Admin\Inventory\PurchasesController;
 use App\Http\Controllers\Admin\Inventory\SuppliersController;
+use App\Http\Controllers\Admin\Prosthesis\InvoiceController;
 use App\Http\Controllers\Admin\Prosthesis\ServiceController;
 use App\Http\Controllers\Admin\Stock\StockController;
 use App\Models\Service;
@@ -87,6 +88,8 @@ Route::get('/movement-stock' , [StockController::class , 'stock_movment'])->name
 
 Route::resource('/prosthesis-case' , CaseController::class);
 
+
+
 Route::post('/prosthesis-case/{prosthesis_case}/generate-invoice', [CaseController::class, 'generateInvoice'])->name('invoice.generate');
 
 Route::get('/prosthesis-case/{case_invoice}/download-invoice' , [CaseController::class , 'downloadInvoice'])->name('invoices.download');
@@ -95,7 +98,7 @@ Route::get('/prosthesis-case/{case_invoice}/download-invoice' , [CaseController:
 
 Route::resource("/prosthesis-service" , ServiceController::class)->except(['create' , 'show' ,'edit']);;
 
-
+Route::resource("/prosthesis-invoice" ,InvoiceController::class);
 
 ///prosthesis-consumption   //prosthesis-service ///prosthesis-invoice
 

@@ -35,16 +35,16 @@ class ProsthesisCase extends Model
     protected static function booted(){
 
         static::creating(function($model){
-            $model->case_number = self::generateCaseNumber();
+            $model->case_number = 'CAS-'.self::generateCaseNumber();
         });
 
     }
 
     protected static function generateCaseNumber(){
         do{
-            $code = random_int(1000000 , 9999999);
-        }while(self::where('case_number', $code)->exists());
-        return $code ;
+            $code = date('ymd') . '-' . random_int(1000, 9999);
+        }while(self::where('case_number',  strval($code))->exists());
+        return strval($code) ;
     }
 
 

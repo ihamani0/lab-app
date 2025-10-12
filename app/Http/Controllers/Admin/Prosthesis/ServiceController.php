@@ -10,14 +10,26 @@ use Inertia\Inertia;
 class ServiceController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::query()
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Service::query();
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $query->where(function ($q) use ($search) {
+                    $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('service_number LIKE ?', ["%{$search}%"]);
+                });
+        }
+        $services = $query
+            ->orderBy('name', 'asc')
+            ->paginate(10)
+            ->appends($request->only('search'));
+
+
 
         return Inertia::render('Services/ServiceIndex', [
-            'services' => $services
+            'services' => $services ,
+            'filters' => $request->only(['search'])
         ]);
     }
 
@@ -29,7 +41,7 @@ class ServiceController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        $validated["service_number"] = 'SRV-' . strtoupper(uniqid());
+        $validated["service_number"] = 'SRV-' . random_int(100000, 999999);
         Service::create($validated);
 
         return redirect()->route('prosthesis-service.index')->with('success', 'Service created successfully.');
@@ -37,7 +49,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $prosthesisService)
     {
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',

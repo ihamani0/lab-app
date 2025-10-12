@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { FORMAT_DATE } from "@/constants"
-import { getBadgeVariantForPurchase } from "@/lib/utils"
+import { getBadgeVariantForCases, getBadgeVariantForPurchase } from "@/lib/utils"
 import { Case } from "@/Types"
 import { format } from "date-fns"
 import { BadgeInfo, Coins, EyeIcon, NotebookPenIcon, Package, Stethoscope, User, Wrench } from "lucide-react"
@@ -57,8 +57,8 @@ export default function ViewCase({prosthesis_case} : {prosthesis_case : Case}) {
             <div className="space-y-4">
                 <p className="flex gap-1 items-center">
                     Case Status:{" "}
-                    <Badge variant={getBadgeVariantForPurchase(prosthesis_case.status)}>
-                    {prosthesis_case.status}
+                    <Badge variant={getBadgeVariantForCases(prosthesis_case.status)}>
+                        {prosthesis_case.status}
                     </Badge>
                 </p>
                 {/* Check if te status is delevried to show the date */}
@@ -106,8 +106,12 @@ export default function ViewCase({prosthesis_case} : {prosthesis_case : Case}) {
                     <td className="p-2 text-right">{item.disk_type || '/'}</td>
                     <td className="p-2 text-right">{parseInt(item.quantity)}</td>
                     <td className="p-2 text-right">{parseInt(item.unit_price).toFixed(2)}</td>
-                    <td className="p-2 text-right">{item.status}</td>
-                    <td className="p-2 text-right">{parseInt(item.quantity) * parseInt(item.unit_price) }</td>
+                    <td className="p-2 text-right">
+                        <Badge variant={getBadgeVariantForCases(item.status)}>
+                            {item.status}
+                        </Badge>
+                    </td>
+                    <td className="p-2 text-right font-semibold">{(parseInt(item.quantity) * parseInt(item.unit_price)).toFixed(2) }</td>
                     </tr>
                 ))}
                 </tbody>
@@ -119,7 +123,7 @@ export default function ViewCase({prosthesis_case} : {prosthesis_case : Case}) {
 
         <div className="mt-6 flex flex-col items-start space-y-1 text-base">
             <div className="flex items-center gap-x-2"><Coins /> Cost :</div>
-          <p>Total: <span className="font-medium">{parseInt(prosthesis_case.total_cost || '0')?.toFixed(2) }</span></p>
+          <p>Total: <span className="font-medium">{parseInt(prosthesis_case.total_cost || '0')?.toFixed(2) } DZD</span></p>
 
         </div>
 

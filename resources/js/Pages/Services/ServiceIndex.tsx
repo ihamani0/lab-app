@@ -1,12 +1,12 @@
 import AppLayout from "@/Layouts/AppLayout"
-import { BreadcrumbItem, FalshProps, type Service as ServiceType } from "@/Types"
+import { BreadcrumbItem, FalshProps, FiltersQuery, type Service as ServiceType } from "@/Types"
 import { type PaginationLink} from "@/Types";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
- 
+
 import Pagination from "@/components/pagination";
 import { Separator } from "@/components/ui/separator";
 
@@ -18,6 +18,7 @@ import DataService from "./data-service";
 
 type Props = {
     services :  { data: ServiceType[]; links: PaginationLink[] }
+    filters : FiltersQuery
 }
 
 
@@ -34,7 +35,7 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 
 
-function Service({services} : Props) {
+function Service({services , filters} : Props) {
 
     const { flash }  =  usePage<FalshProps>().props ;
 
@@ -56,26 +57,28 @@ function Service({services} : Props) {
 
   return (
            <AppLayout  breadcrumbs={breadcrumbs}>
-                <Card className="m-4">
+                <Card className="m-4 space-y-4">
                     <CardHeader>
                         <CardTitle>Service Prosthesis Management</CardTitle>
                         <CardDescription className="mt-2 text-sm xl:text-base">
                             Here you can add, remove, update all Doctors that work with the lab.
                         </CardDescription>
-                        <Separator className="mt-2" />
+
                         <CardAction>
                             {/* <CreateDoctor/>  */}
                             <CreateService/>
                         </CardAction>
                     </CardHeader>
 
-                    <CardContent>
+                    <CardContent className="space-y-4">
                         {/* Search inpute */}
                         <SearchInput
                             handleChange={(e) => handleSearchChange(e.target.value)}
                             searchTerm={searchTerm}
+                            defaultValue={filters.search || ""}
+                            placeholder="Search by Name ..."
                         />
-                        <Separator className="my-4" />
+
                         {/* Table */}
                         <DataService services={services.data} />
                     </CardContent>
@@ -90,4 +93,3 @@ function Service({services} : Props) {
 
 
 export default  Service ;
- 

@@ -274,3 +274,19 @@ export interface Service {
     description: string;
     price: number;
 }
+
+
+export interface InvoiceCase {
+    id: string;
+    invoice_number : string ,
+    case : Case ,
+    total_amount : number ,
+    tva_amount : number ,
+    discount_amount : number ,
+    net_amount : number ,
+    invoice_date : string ,
+    status : string ,
+    payment_status : string ,
+    payment_date : string
+
+}

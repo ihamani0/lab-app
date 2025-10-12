@@ -61,12 +61,13 @@ export default function FilterCase({doctors , technicians , filters} : Props) {
     }
 
   return (
-        <div className="flex items-center gap-2  mb-5 ">
+        <div className="flex items-center gap-4 mb-5  ">
+
             <div >
                 <Select value={filters.doctor_id || doctor || ""}
                 onValueChange={(val)=>setDoctor(val)}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-full">
                         <SelectValue placeholder="Doctor" />
                     </SelectTrigger>
                     <SelectContent>
@@ -81,7 +82,7 @@ export default function FilterCase({doctors , technicians , filters} : Props) {
                 <Select value={filters.technician_id || technician || ""}
                 onValueChange={(val)=>setTechnician(val)}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-full">
                         <SelectValue placeholder="Technician" />
                     </SelectTrigger>
                     <SelectContent>
@@ -97,6 +98,7 @@ export default function FilterCase({doctors , technicians , filters} : Props) {
                 onValueChange={(value) =>setStatus(value)}
                 value={filters.status || status || ""}
                 placeholder="Sort by"
+                className="max-w-[140px]"
             />
 
             {/* Filter with Day */}
@@ -108,7 +110,7 @@ export default function FilterCase({doctors , technicians , filters} : Props) {
                  type="button"
                     variant="outline"
                     data-empty={!dateRange}
-                    className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
+                    className="data-[empty=true]:text-muted-foreground w-[250px] justify-start text-left font-normal"
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     <span>
@@ -146,44 +148,44 @@ export default function FilterCase({doctors , technicians , filters} : Props) {
 
 
 
-        <SearchInput
-            placeholder="search by invoice number"
-            handleChange={(e) => handleSearchChange(e.target.value)}
-            searchTerm={searchTerm}
-            defaultValue={filters.search || ""}
-        />
+            <SearchInput
+                placeholder="search by invoice number"
+                handleChange={(e) => handleSearchChange(e.target.value)}
+                searchTerm={searchTerm}
+                defaultValue={filters.search || ""}
+            />
 
 
-        <div className="flex gap-1 items-center">
-            <Tooltip>
-                <TooltipTrigger>
-                    <Button
-                        className="cursor-pointer"
-                        variant="destructive"
-                        onClick={() => router.get("/prosthesis-case")}
+            <div className="flex justify-end gap-2 col-span-1 w-full">
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button
+                            className="cursor-pointer"
+                            variant="destructive"
+                            onClick={() => router.get("/prosthesis-case")}
+                            >
+                            <Recycle />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Reset Filter</p>
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button
+                            className="cursor-pointer"
+                            variant="secondary"
+                            onClick={submitFilter}
                         >
-                        <Recycle />
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Reset Filter</p>
-                </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-                <TooltipTrigger>
-                    <Button
-                        className="cursor-pointer"
-                        variant="secondary"
-                        onClick={submitFilter}
-                    >
-                        <Send />
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Submit Filter</p>
-                </TooltipContent>
-            </Tooltip>
-        </div>
+                            <Send />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Submit Filter</p>
+                    </TooltipContent>
+                </Tooltip>
+            </div>
 
         </div>
   )

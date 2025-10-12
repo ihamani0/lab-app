@@ -5,7 +5,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 import { router } from "@inertiajs/react";
 import { Trash } from "lucide-react";
 import EditService from "./edit-service";
- 
+
 
 
 type Props = {
@@ -32,7 +32,7 @@ export default function DataService({services}: Props) {
                     <TableCell>{service.service_number}</TableCell>
                     <TableCell>{service.name}</TableCell>
                     <TableCell>{service.description || "-"}</TableCell>
-                    <TableCell>{service.price.toFixed(2)}</TableCell>
+                    <TableCell>{service.price}</TableCell>
                     <TableCell className="text-right space-x-2">
                        <EditService service={service} />
                         <Button
@@ -40,7 +40,7 @@ export default function DataService({services}: Props) {
                             size="sm"
                             onClick={() => {
                                 if (confirm("Are you sure?")) {
-                                    router.delete(`/services/${service.id}`);
+                                    router.delete(`/prosthesis-service/${service.id}`);
                                 }
                             }}
                         >
@@ -54,4 +54,3 @@ export default function DataService({services}: Props) {
     </Table>
   )
 }
- 

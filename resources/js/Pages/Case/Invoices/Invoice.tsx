@@ -1,23 +1,25 @@
+
 import AppLayout from "@/Layouts/AppLayout"
-import { BreadcrumbItem, type Case as CaseType  , Doctor, FalshProps, FiltersQuery, Patient, User } from "@/Types"
+import { BreadcrumbItem, type Case as CaseType  , FalshProps, FiltersQuery, InvoiceCase} from "@/Types"
 import { type PaginationLink} from "@/Types";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+
+
 import Pagination from "@/components/pagination";
 import { Separator } from "@/components/ui/separator";
-import CreateCase from "./create-case";
-import DataCase from "./data-case";
-import FilterCase from "./filter-case";
+import { FileSpreadsheet } from "lucide-react";
+import DataInvoice from "./data-invoice";
+
+
+
+
 
 
 type Props = {
-    cases :  { data: CaseType[]; links: PaginationLink[] } ,
-    doctors : Doctor[];
-    technicians : User[];
-    patients : Patient[];
-    filters : FiltersQuery
+    invoices :  { data: InvoiceCase[]; links: PaginationLink[] } ,
 }
 
 
@@ -27,18 +29,16 @@ const breadcrumbs : BreadcrumbItem[] = [
         href: '/',
     },
     {
-    title: 'Cases Managment',
-    href: '/cases',
+    title: 'Invoice Managment',
+    href: '/prosthesis-invoice',
     }
 ];
 
 
 
-function Case({cases , doctors , technicians , patients , filters} : Props) {
+function Invoice({invoices} : Props) {
 
     const { flash }  =  usePage<FalshProps>().props ;
-
-
 
         // For sonner Toast mesage Flash
     useEffect(()=>{
@@ -56,39 +56,33 @@ function Case({cases , doctors , technicians , patients , filters} : Props) {
            <AppLayout  breadcrumbs={breadcrumbs}>
                 <Card className="m-4">
                     <CardHeader>
-                        <CardTitle>Case Management</CardTitle>
+                        <CardTitle className="flex items-center gap-x-2"> <FileSpreadsheet /> Invoice Management</CardTitle>
                         <CardDescription className="mt-2 text-sm xl:text-base">
-                            Here you can add, remove, update all Cases that work with the lab.
+                            Here you can add, remove, update all Invoices that work with the lab.
                         </CardDescription>
                         <Separator className="mt-2" />
                         <CardAction>
                             {/* <CreateDoctor/> */}
-                            <CreateCase
-                                doctors={doctors}
-                                technicians={technicians}
-                                patients={patients}
-                            />
+
                         </CardAction>
                     </CardHeader>
 
                     <CardContent>
                         {/* Search inpute */}
 
-                        <FilterCase
-                            doctors={doctors}
-                            technicians={technicians}
-                            filters={filters}
-                        />
+
 
                         {/* Table */}
-                        <DataCase cases={cases.data} />
+                        <DataInvoice  invoices={invoices.data}/>
                     </CardContent>
                     <CardFooter className="flex justify-end">
-                            <Pagination  links={cases.links}/>
+                            {/* <Pagination  links={cases.links}/> */}
                     </CardFooter>
                     </Card>
 
            </AppLayout>
   )
 }
-export default Case;
+export default Invoice;
+
+
