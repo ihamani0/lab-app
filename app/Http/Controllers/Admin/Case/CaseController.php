@@ -244,38 +244,11 @@ class CaseController extends Controller
                 ]
             );
 
-            // Pass both the case and the invoice data to the view
-            $pdf = Pdf::loadView('Pdf.InvoiceCase', [
-                'prosthesis_case' => $prosthesis_case,
-                'invoice' => $invoice, // ✅ Uncommented this line
-            ]);
-
-            $fileName = $invoice->invoice_number . '.pdf';
-
-            // Let Spatie Media Library handle the file directly from the PDF stream
-            // This avoids creating and then deleting a temporary file, which is safer and cleaner.
-                // ✅ CLEAR THE COLLECTION FIRST
-            // This deletes any old invoice PDFs associated with this record.
-            $invoice->clearMediaCollection('invoice');
-
-
-            $invoice->addMediaFromString($pdf->output())
-                    ->usingFileName($invoice->invoice_number . '.pdf')
-                    ->toMediaCollection('invoice', 'public'); // Specify the disk if needed
-
             // Redirect with a success message
-            return redirect()->route('invoices.index')->with(['success' => 'Invoice generated successfully.']);
+            return redirect()->route('prosthesis-invoice.index')->with(['success' => 'Invoice generated successfully.']);
         }
 
 
-
-        public function downloadInvoice($case_invoice){
-            $invoice = CaseInvoice::findOrFail($case_invoice);
-            // dd($invoice);
-            $media = $invoice->getFirstMedia('invoice');
-            if (! $media) abort(404);
-            return response()->download($media->getPath(), $media->file_name);
-        }
 
 
 
@@ -284,25 +257,3 @@ class CaseController extends Controller
 
     }
 
-
-// array:9 [▼ // app/Http/Controllers/Admin/Case/CaseController.php:164
-//   "id" => 6
-//   "patient_id" => "1"
-//   "doctor_id" => "1"
-//   "technician_id" => "2"
-//   "assistant" => "RaY"
-//   "description" => "Gouttier BLM HAut Bas"
-//   "status" => "pending"
-//   "delivered_date" => null
-//   "case_items" => array:1 [▼
-//     0 => array:7 [▼
-//       "service_id" => "1"
-//       "tooth_number" => null
-//       "shade" => "2m2"
-//       "disk_type" => null
-//       "quantity" => "1"
-//       "unit_price" => "10000.00"
-//       "status" => "pending"
-//     ]
-//   ]
-// ]

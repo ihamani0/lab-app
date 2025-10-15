@@ -287,6 +287,6 @@ export interface InvoiceCase {
     invoice_date : string ,
     status : string ,
     payment_status : string ,
-    payment_date : string
+    payment_date :  Date | undefined
 
 }

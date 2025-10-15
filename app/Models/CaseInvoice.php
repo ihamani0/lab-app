@@ -15,7 +15,7 @@ class CaseInvoice extends Model  implements HasMedia
     public static $DISCOUNT = 0 ;
 
     protected $fillable =[
-        'invoice_number' , 'prosthesis_case_id' , 'total_amount' , 'tva_amount' , 'discount_amount', 'net_amount', 'invoice_date', 'status', 'payment_status'
+        'invoice_number' , 'prosthesis_case_id' , 'total_amount' , 'tva_amount' , 'discount_amount', 'net_amount', 'invoice_date', 'status', 'payment_status' , 'payment_date'
     ];
 
 

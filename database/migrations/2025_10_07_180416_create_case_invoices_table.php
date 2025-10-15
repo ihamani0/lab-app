@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('invoice_date')->default(now());
             $table->string('status')->default('draft');
             $table->string('payment_status')->default('unpaid');
+            $table->date('payment_date')->nullable();
             $table->string('pdf_path')->nullable(); // if you store invoice files with spatie/media
             $table->timestamps();
         });

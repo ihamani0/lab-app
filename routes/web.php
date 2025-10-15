@@ -99,7 +99,10 @@ Route::get('/prosthesis-case/{case_invoice}/download-invoice' , [CaseController:
 Route::resource("/prosthesis-service" , ServiceController::class)->except(['create' , 'show' ,'edit']);;
 
 Route::resource("/prosthesis-invoice" ,InvoiceController::class);
+Route::get("/prosthesis-invoice/{case_invoice}/download-invoice" ,[InvoiceController::class , 'downloadInvoice']);
 
+
+//`/prosthesis-invoice/${invoice.id}/download`
 ///prosthesis-consumption   //prosthesis-service ///prosthesis-invoice
 
 
