@@ -36,7 +36,7 @@ export function getBadgeVariantForPurchase(status : string)  {
 //"pending" |"delivered" |"in_progress" | "completed" | "on_hold" | "cancelled"
 export function getBadgeVariantForCases(status : string)  {
     switch (status) {
-        
+
     case 'cancelled':
       return 'destructive';
 
@@ -59,4 +59,19 @@ export function getBadgeVariantForCases(status : string)  {
     default:
       return 'secondary'; // fallback for unknown statuses
   }
+}
+
+
+/**
+ * Convert a Date object to "YYYY-MM-DD" format
+ * Example: 2025-10-14
+ */
+
+export function formatDateToYMD(date: Date | string | null | undefined) {
+
+    if (!date) return "";
+
+    const d = typeof date === "string" ? new Date(date) : date;
+
+    return d.toISOString().split("T")[0];
 }

@@ -12,10 +12,13 @@ export interface FiltersQuery  {
         unit?:string;
         status?:string;
         type ?:string;
-
         doctor_id ?:string
         technician_id ?:string
-
+        payment_status ?: string,
+        amount_min ?:string,
+        amount_max ?:string,
+        date_from ?: string ,
+        date_to ?: string
     }
 
 export interface User {
@@ -287,6 +290,7 @@ export interface InvoiceCase {
     invoice_date : string ,
     status : string ,
     payment_status : string ,
-    payment_date :  Date | undefined
+    payment_date :  Date | undefined ,
+    note ?:string
 
 }

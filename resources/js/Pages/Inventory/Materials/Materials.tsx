@@ -42,9 +42,6 @@ function Materials({materials , categories , filters} : Props) {
 
     const { flash }  =  usePage<FalshProps>().props ;
 
-    const { searchTerm , handleSearchChange } = useDebouncedSearch({
-        route : '/materials',
-    })
 
         // For sonner Toast mesage Flash
     useEffect(()=>{
@@ -79,7 +76,7 @@ function Materials({materials , categories , filters} : Props) {
 
                         <FilterMaterial  categories={categories} filters={filters}/>
 
-                        <ExportData />
+                        <ExportData url="/materials" />
 
                         {/* Table */}
 

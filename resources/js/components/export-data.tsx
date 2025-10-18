@@ -21,17 +21,18 @@ const ExportDefault = [
     {id : 'xlsx' , name : "xlsx" , icon : LucideSheet},
 ]
 
-function ExportData() {
-        const form = useForm({});
+function ExportData({url , params=""} : { url : string , params ?:string}) {
+
+
         const [format, setFormat] = useState<string>("")
 
         const handleExport = () => {
-        if (!format) {
-            alert("Please select an export format first.")
-            return
+            if (!format) {
+                alert("Please select an export format first.")
+                return
             }
             // Trigger file download
-            window.location.href = `/materials/export?format=${format}`
+            window.location.href = `${url}/${format}?${params}`
         }
 
   return (

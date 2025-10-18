@@ -1,9 +1,9 @@
 
 import AppLayout from "@/Layouts/AppLayout"
-import { BreadcrumbItem, type Case as CaseType  , FalshProps, FiltersQuery, InvoiceCase} from "@/Types"
+import { BreadcrumbItem , type Doctor as DoctorType, FalshProps, FiltersQuery, InvoiceCase} from "@/Types"
 import { type PaginationLink} from "@/Types";
-import { usePage } from "@inertiajs/react";
-import { useEffect } from "react";
+import { router, usePage } from "@inertiajs/react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -12,6 +12,8 @@ import Pagination from "@/components/pagination";
 import { Separator } from "@/components/ui/separator";
 import { FileSpreadsheet } from "lucide-react";
 import DataInvoice from "./data-invoice";
+import FilterInvoice from "./filter-invoice";
+import ExportData from "@/components/export-data";
 
 
 
@@ -20,6 +22,8 @@ import DataInvoice from "./data-invoice";
 
 type Props = {
     invoices :  { data: InvoiceCase[]; links: PaginationLink[] } ,
+    filters : FiltersQuery,
+    doctors : DoctorType[]
 }
 
 
@@ -36,9 +40,23 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 
 
-function Invoice({invoices} : Props) {
+function Invoice({invoices , filters , doctors} : Props) {
 
     const { flash }  =  usePage<FalshProps>().props ;
+    
+
+
+
+    const params = useMemo(() => {
+        return new URLSearchParams({
+                doctor_id: filters.doctor_id || "",
+                status: filters.status || "",
+                amount_min: filters.amount_min || "",
+                amount_max: filters.amount_max || "",
+                date_from: filters.date_from || "",
+                date_to: filters.date_to || "",
+            });
+    }, [filters]);
 
         // For sonner Toast mesage Flash
     useEffect(()=>{
@@ -50,6 +68,10 @@ function Invoice({invoices} : Props) {
             toast.error(flash.error)
         }
     } , [flash])
+
+    useEffect(()=>{
+        router.reload({ only: ['invoices'] })
+    } , [])
 
 
   return (
@@ -70,19 +92,30 @@ function Invoice({invoices} : Props) {
                     <CardContent>
                         {/* Search inpute */}
 
+                        <FilterInvoice
+                            doctors={doctors}
+                            filters={filters}
+                        />
+
 
 
                         {/* Table */}
                         <DataInvoice  invoices={invoices.data}/>
                     </CardContent>
-                    <CardFooter className="flex justify-end">
-                            {/* <Pagination  links={cases.links}/> */}
-                    </CardFooter>
+
+                        <CardFooter className="flex flex-col ">
+                                <div className="self-end">
+                                    <Pagination  links={invoices.links}/>
+                                </div>
+
+                                {/* Export */}
+                                <div className="self-start">
+                                    <ExportData  url="/prosthesis-invoice/export"  params={params.toString()}/>
+                                </div>
+                        </CardFooter>
                     </Card>
 
            </AppLayout>
   )
 }
 export default Invoice;
-
-

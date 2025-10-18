@@ -2,39 +2,57 @@
 
 namespace App\Http\Controllers\Admin\Prosthesis;
 
+use App\Exports\InvoiceExport;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CaseInvoiceResource;
 use App\Models\CaseInvoice;
+use App\Models\Doctor;
 use App\Models\Service;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
 {
     //
     public function index(Request $request)
     {
+        // dd($request->all());
         $query = CaseInvoice::query()->with(['case']);
-        // if ($request->filled('search')) {
-        //     $search = strtolower($request->search);
-        //     $query->where(function ($q) use ($search) {
-        //             $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-        //             ->orWhereRaw('service_number LIKE ?', ["%{$search}%"]);
-        //         });
-        // }
-        $invoices = $query
-            ->paginate(10)
-            ->appends($request->only('search'));
+
+        //---------------------------------------------------------------------
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                    $q->where('invoice_number', 'LIKE', "%INV-{$search}%")
+                    ->OrWhere('invoice_number', 'LIKE', "%{$search}%")
+                    ->orWhereHas('case' , function($q2) use($search){
+                        $q2->where('case_number' , 'LIKE', "%CAS-{$search}%")
+                            ->orWhere('case_number' , 'LIKE', "%{$search}%");
+                    });
+                });
+        }
 
 
+        $invoices = $this->applyInvoiceFilters($query , $request)
+            ->paginate(20)
+            ->appends($request->all());
+
+        // dd(Doctor::pluck('name', 'id'));
+        // dd($invoices->all());
 
         return Inertia::render('Case/Invoices/Invoice' , [
-            'invoices'=>$invoices
+            'invoices'=>$invoices ,
+            'doctors' => Doctor::select('name', 'id')->get() ,
+            'filters' => $request->only(['doctor_id' , 'search' , 'status' , 'date_from' , "date_to" , 'amount_min' , 'amount_max'])
         ]);
     }
 
+
+        //---------------------------------------------------------------------
 
     public function edit(CaseInvoice $prosthesis_invoice){
             $prosthesis_invoice->load([
@@ -44,15 +62,13 @@ class InvoiceController extends Controller
                 'case.CaseItems.service'
             ]);
 
-
-
-        //  dd((new CaseInvoiceResource($prosthesis_invoice))->toArray(request()));
-
         return Inertia::render('Case/Invoices/details-invoice' , [
             'invoice' => (new CaseInvoiceResource($prosthesis_invoice))->resolve(),
         ]);
     }
 
+
+    //---------------------------------------------------------------------
 
     public function update(Request $request, CaseInvoice $prosthesis_invoice)
     {
@@ -78,12 +94,17 @@ class InvoiceController extends Controller
         return redirect()->route('prosthesis-invoice.edit' , [$prosthesis_invoice->id])->with('success', 'Service updated successfully.');
     }
 
+
+
+    //---------------------------------------------------------------------
+
     public function destroy(Service $prosthesisService)
     {
         $prosthesisService->delete();
 
         return redirect()->route('prosthesis-service.index')->with('success', 'Service deleted successfully.');
     }
+    //---------------------------------------------------------------------
 
 
         public function downloadInvoice(CaseInvoice $case_invoice){
@@ -113,4 +134,66 @@ class InvoiceController extends Controller
             if (! $media) abort(404);
             return response()->download($media->getPath(), $media->file_name);
         }
-}
+
+
+
+        //---------------------------------------------------------------------
+
+
+        public function export(Request $request , string $format)
+        {
+            // dd($request->all());
+
+            if (!in_array($format, ['csv', 'xlsx'])) {
+                    abort(400, 'Unsupported format');
+            }
+
+            $filters = $request->only(['doctor_id', 'status', 'amount_min', 'amount_max', 'date_from', 'date_to']);
+
+            return Excel::download(new InvoiceExport($filters), "invoices-{$format}-export.{$format}");
+        }
+
+
+    private function applyInvoiceFilters($query, $request){
+
+
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+
+                $query->whereBetween('invoice_date', [Carbon::parse($request->date_from)->format("Y-m-d"), Carbon::parse($request->date_to)->format("Y-m-d")]);
+
+            } elseif ($request->filled('date_from')) {
+
+                $query->whereDate('invoice_date', '>=', $request->date_from);
+
+            } elseif ($request->filled('date_to')) {
+
+                $query->whereDate('invoice_date', '<=', $request->date_to);
+
+            }
+
+
+
+        if ($request->filled('status')) {
+            $query->where('payment_status', $request->status);
+        }
+
+
+        if($request->filled('amount_min') && $request->filled('amount_max')){
+
+            $query->whereBetween('total_amount', [
+                            (float) $request->amount_min,
+                            (float) $request->amount_max,
+                        ]);
+
+        }else if($request->filled('amount_min') && !$request->filled('amount_max')){
+
+            $query->where('total_amount', '>=' , (float) $request->amount_min);
+        }else if ($request->filled('amount_max')) {
+                $query->where('total_amount', '<=' , (float) $request->amount_max);
+
+        }
+
+        return $query;
+    }
+
+    }

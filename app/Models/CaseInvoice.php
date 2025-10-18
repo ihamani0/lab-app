@@ -18,7 +18,9 @@ class CaseInvoice extends Model  implements HasMedia
         'invoice_number' , 'prosthesis_case_id' , 'total_amount' , 'tva_amount' , 'discount_amount', 'net_amount', 'invoice_date', 'status', 'payment_status' , 'payment_date'
     ];
 
-
+    // protected $casts = [
+    //     'invoice_date' => "date"
+    // ];
 
     public function case(){
         return $this->belongsTo(ProsthesisCase::class, 'prosthesis_case_id');

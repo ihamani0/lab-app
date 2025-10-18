@@ -10,11 +10,10 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { format } from "date-fns"
 import { BreadcrumbItem, FalshProps, InvoiceCase } from "@/Types"
-import { useForm, usePage } from "@inertiajs/react"
+import { router, useForm, usePage } from "@inertiajs/react"
 import AppLayout from "@/Layouts/AppLayout"
 import { toast } from "sonner"
 import SelectField from "@/components/select-field"
-
 
 type Props = {
     invoice : InvoiceCase
@@ -45,11 +44,19 @@ export default function DetailsInvoice({invoice} : Props) {
 
     const form = useForm({
         status : invoice.status,
-        payment_status  : invoice.payment_status ||  isPaid ? "paid" : "unpaid",
+        payment_status: invoice.payment_status
+                        ? invoice.payment_status
+                        : (isPaid ? "paid" : "unpaid"),
         payment_date : invoice.payment_date ? new Date(invoice.payment_date) : undefined
     });
 
-        const { flash }  =  usePage<FalshProps>().props ;
+    useEffect(() => {
+        form.setData("payment_status", isPaid ? "paid" : "unpaid");
+    }, [isPaid]);
+
+
+
+    const { flash }  =  usePage<FalshProps>().props ;
 
         // For sonner Toast mesage Flash
         useEffect(()=>{
@@ -60,7 +67,10 @@ export default function DetailsInvoice({invoice} : Props) {
             if(flash.error){
                 toast.error(flash.error)
             }
-        } , [flash])
+    } , [flash])
+
+
+
 
     const handleDownload = () => {
         window.location.href = `/prosthesis-invoice/${invoice.id}/download-invoice`;

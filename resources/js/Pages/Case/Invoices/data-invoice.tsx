@@ -16,6 +16,20 @@ type Props = {
 
 }
 
+const getVariantStatus = (val: string)=>{
+    switch (val) {
+        case 'final':
+            return 'default';
+        case 'draft':
+            return 'outline';
+        case 'canceled':
+            return 'destructive';
+        default:
+            return 'outline';
+    }
+}
+
+
 export default function DataInvoice({invoices}:Props) {
 
     const [loading, setLoading] = useState(false);
@@ -25,12 +39,13 @@ export default function DataInvoice({invoices}:Props) {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>Case Number #</TableHead>
-                    <TableHead>Recived Date </TableHead>
+                    <TableHead>Invoice Number </TableHead>
+                    <TableHead>Isues Date </TableHead>
                     <TableHead>Case Number</TableHead>
-                    <TableHead>Doctor</TableHead>
-                    <TableHead>Descrption</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Note</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Payment Status</TableHead>
                     <TableHead className="text-right">
                         Actions
                     </TableHead>
@@ -52,12 +67,17 @@ export default function DataInvoice({invoices}:Props) {
                             </Badge>
                         </Link>
                     </TableCell>
-                    <TableCell>{item.net_amount}</TableCell>
-                    <TableCell>{item.status || "N/A"}</TableCell>
+                    <TableCell>{item.net_amount} DZD</TableCell>
+                    <TableCell>{item.note || "-"}</TableCell>
+                    <TableCell>
+                        <Badge variant={getVariantStatus(item.status)}>
+                            {item.status.toUpperCase() || "-"}
+                        </Badge>
+                        </TableCell>
                     <TableCell>
                         <Badge variant={item.payment_status ==='unpaid' ? 'destructive' : 'success'} className="shadow text-sm" >
 
-                        {item.payment_status || "N/A"}
+                        {item.payment_status.toUpperCase() || "N/A"}
                         </Badge>
                     </TableCell>
                     <TableCell className="text-right space-x-2">

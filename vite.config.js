@@ -17,6 +17,10 @@ export default defineConfig({
         port: 5173,
         // hmr: {
         //     host: "192.168.1.40", // Connect to the HMR server from the browser via localhost
+        //     protocol: 'ws',
         // },
+        watch: {
+            usePolling: true, // 👈 important when using Docker on Linux/Windows
+        },
     },
 });
