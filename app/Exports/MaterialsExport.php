@@ -31,19 +31,19 @@ class MaterialsExport implements FromCollection
         ];
     }
 
-        public function map($material): array
+    public function map($material): array
     {
-        return [
-            $material->id,
-            $material->sku,
-            $material->name,
-            $material->description,
-            $material->price,
-            $material->stock_quantity,
-            $material->unit,
-            $material->category?->name,
-            $material->brand?->name,
-            $material->created_at->format('Y-m-d H:i'),
-        ];
+            return [
+                $material->id,
+                $material->sku,
+                $material->name,
+                $material->description,
+                $material->price,
+                $material->stock_quantity,
+                $material->unit,
+                $material->category?->name,
+                $material->brand?->name,
+                $material->created_at->format('Y-m-d H:i'),
+            ];
     }
 }

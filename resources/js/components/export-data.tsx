@@ -21,8 +21,7 @@ const ExportDefault = [
     {id : 'xlsx' , name : "xlsx" , icon : LucideSheet},
 ]
 
-function ExportData({url , params=""} : { url : string , params ?:string}) {
-
+function ExportData({url , params = ""} : { url : string , params ?:string}) {
 
         const [format, setFormat] = useState<string>("")
 

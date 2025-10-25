@@ -10,7 +10,7 @@ class Consumption extends Model
         'prosthesis_case_id',
         'material_id',
         'technician_id',
-        'quantity_used',
+        'quantity_used','unit_cost' , 'total_cost'
     ];
 
     public function prothesicCase(){

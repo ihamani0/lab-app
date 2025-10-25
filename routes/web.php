@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Inventory\CategorieController;
 use App\Http\Controllers\Admin\Inventory\MaterialsController;
 use App\Http\Controllers\Admin\Inventory\PurchasesController;
 use App\Http\Controllers\Admin\Inventory\SuppliersController;
+use App\Http\Controllers\Admin\Prosthesis\ConsumptionController;
 use App\Http\Controllers\Admin\Prosthesis\InvoiceController;
 use App\Http\Controllers\Admin\Prosthesis\ServiceController;
 use App\Http\Controllers\Admin\Stock\StockController;
@@ -63,7 +64,7 @@ Route::get('/materials/{id}/decrement' , [MaterialsController::class , 'confirmD
 
 Route::post('/materials/{id}/decrement' , [MaterialsController::class , 'decrementStockUsingQrCode'])->name('materials.update-decrement');
 
-Route::get('/materials/export', [MaterialsController::class, 'export'])
+Route::get('/materials/export/{format}', [MaterialsController::class, 'export'])
      ->name('materials.export');
 
 
@@ -100,9 +101,13 @@ Route::resource("/prosthesis-service" , ServiceController::class)->except(['crea
 
 
 Route::resource("/prosthesis-invoice" ,InvoiceController::class)->except('show');
+
 Route::get("/prosthesis-invoice/{case_invoice}/download-invoice" ,[InvoiceController::class , 'downloadInvoice']);
 
 Route::get("/prosthesis-invoice/export/{format}" ,[InvoiceController::class , 'export']);
+
+
+Route::resource("/prosthesis-consumption" ,ConsumptionController::class)->except('show');
 
 
 //`/prosthesis-invoice/${invoice.id}/download`

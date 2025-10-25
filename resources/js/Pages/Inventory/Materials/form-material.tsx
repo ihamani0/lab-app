@@ -49,12 +49,6 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
     e.preventDefault()
     if (!validate()) return
 
-    // form.post(action, {
-    //     _method: 'put',
-    //   preserveScroll: true,
-    //   forceFormData: true,
-    //   onSuccess: () => form.reset(),
-    // })
     router.post(action,  {
         _method: method, // Laravel will treat this as PUT
         ...form.data,   // all other fields
@@ -152,7 +146,7 @@ function FormMaterial({ product, method, action, categoroies }: Props) {
 
       {/* Min stock */}
       <div className="flex items-center justify-between gap-x-2">
-        
+
             <FormField
             name="price"
             label="Price of the products"

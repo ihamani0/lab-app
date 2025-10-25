@@ -50,3 +50,4 @@ class StoreMaterialRequest extends FormRequest
         ];
     }
 }
+

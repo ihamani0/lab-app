@@ -124,12 +124,14 @@ class MaterialsController extends Controller
      */
     public function store(StoreMaterialRequest $request){
 
+            // dd($request->all());
         try {
 
             DB::beginTransaction();
 
             // Create product
-            $product = Material::create(collect($request->validate)->except('image')->toArray());
+            $product = Material::create($request->except('image'));
+            
 
             // Attach image if exists
             if ($request->hasFile('image')) {
@@ -146,6 +148,8 @@ class MaterialsController extends Controller
                 ->with('success', 'Material created successfully.');
 
         } catch (\Exception $e) {
+
+            dd($e->getMessage());
             DB::rollBack();
 
             // Optional: log error
@@ -154,7 +158,7 @@ class MaterialsController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors(['error' => 'Something went wrong while saving the material.']);
+                ->with('error' , 'Something went wrong while saving the material.');
             }
 
     }

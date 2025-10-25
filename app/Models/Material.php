@@ -23,6 +23,7 @@ class Material extends Model implements HasMedia
 
     protected $fillable = [
         'sku',
+        'ref' ,
         'name',
         'description',
         'brand_id',
@@ -123,7 +124,8 @@ class Material extends Model implements HasMedia
         }
 
 
-            // Register media collections with custom paths
+    // Register media collections with custom paths
+
     public function registerMediaCollections(): void
     {
         $this
@@ -142,15 +144,7 @@ class Material extends Model implements HasMedia
             ->useDisk('public');
     }
 
-    // public function  registerMediaConversions(?Media $media = null): void
-    // {
-    //     $this
-    //         ->addMediaConversion('thumb')
-    //         ->width(150)
-    //         ->height(150)
-    //         ->sharpen(10)
-    //         ->nonQueued(); // optional - generate immediately
-    // }
+
 
 
     public function getBarcodeUrlAttribute()

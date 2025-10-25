@@ -61,7 +61,7 @@ function FormCategory({category , method , action} : Props) {
             value={form.data.name}
             error={clientErrors?.name || form.errors?.name}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("name", value)
                 setClientErrors(prev => ({ ...prev, name: "" }))
             }}

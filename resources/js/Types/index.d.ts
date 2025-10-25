@@ -1,3 +1,4 @@
+
 import { LucideIcon } from "lucide-react";
 
 
@@ -220,7 +221,7 @@ export interface Stock {
     name: string;
     min_stock:string;
     quantity : string ;
-    stock_movements : StockMovment;
+    stock_movements : StockMovement;
 
 }
 
@@ -293,4 +294,14 @@ export interface InvoiceCase {
     payment_date :  Date | undefined ,
     note ?:string
 
+}
+
+export interface Consumption {
+    id : string | number;
+    case : Case ;
+    materials : Product;
+    quantity : string ;
+    unit_price : string ;
+    total_cost : string ;
+    stock_movement : StockMovement
 }

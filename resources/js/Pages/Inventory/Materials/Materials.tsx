@@ -43,7 +43,7 @@ function Materials({materials , categories , filters} : Props) {
     const { flash }  =  usePage<FalshProps>().props ;
 
 
-        // For sonner Toast mesage Flash
+    // For sonner Toast mesage Flash
     useEffect(()=>{
         if(flash.success){
             toast.success(flash.success)
@@ -76,7 +76,7 @@ function Materials({materials , categories , filters} : Props) {
 
                         <FilterMaterial  categories={categories} filters={filters}/>
 
-                        <ExportData url="/materials" />
+                        <ExportData url="/materials/export" />
 
                         {/* Table */}
 

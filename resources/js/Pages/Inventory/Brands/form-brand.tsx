@@ -64,7 +64,7 @@ function FormBrand({brand , method , action ,categoroies} : Props) {
             value={form.data.name}
             error={clientErrors?.name || form.errors?.name}
             required
-            onChange={(value) => {
+            onChangeEvent={(value) => {
                 form.setData("name", value)
                 setClientErrors(prev => ({ ...prev, name: "" }))
             }}
@@ -101,7 +101,7 @@ function FormBrand({brand , method , action ,categoroies} : Props) {
 
       {/* Submit */}
       <Button type="submit" className="w-full cursor-pointer py-5"  disabled={form.processing}>
-        {form.processing ? "Saving..." : "Save Doctor"}
+        {form.processing ? "Saving..." : "Save Brand"}
       </Button>
     </form>
   )
