@@ -63,8 +63,7 @@ class InvoiceController extends Controller
             ]);
 
         return Inertia::render('Case/Invoices/details-invoice' , [
-            'invoice' => (new CaseInvoiceResource($prosthesis_invoice))->resolve(),
-        ]);
+            'invoice' => (new CaseInvoiceResource($prosthesis_invoice))->resolve()]);
     }
 
 

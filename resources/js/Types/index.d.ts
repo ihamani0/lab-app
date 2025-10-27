@@ -297,11 +297,13 @@ export interface InvoiceCase {
 }
 
 export interface Consumption {
-    id : string | number;
-    case : Case ;
-    materials : Product;
-    quantity : string ;
-    unit_price : string ;
+
+    total_quantity : string ;
     total_cost : string ;
-    stock_movement : StockMovement
+    avg_unit_cost : string ;
+    material_id : string ;
+    material_name : string ;
+    material_sku : string ;
+    in_stock: string ;
+    unit_price :  string ;
 }

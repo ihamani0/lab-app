@@ -21,7 +21,7 @@ import DataConsumption from "./data-consumption";
 
 
 type Props = {
-    consumptions :  { data: ConsumptionType[]; links: PaginationLink[] } ,
+    consumptions :  { data: ConsumptionType[]; links:  PaginationLink[]  } ,
     filters ?: FiltersQuery,
 
 }
@@ -42,6 +42,7 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 function Consumption({consumptions} : Props) {
 
+    console.log(consumptions);
     const { flash }  =  usePage<FalshProps>().props ;
 
 

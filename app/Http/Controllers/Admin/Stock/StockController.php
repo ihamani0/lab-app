@@ -61,51 +61,45 @@ class StockController extends Controller
             try {
                 $validated = $request->validated();
 
-                DB::beginTransaction();
+                 DB::transaction(function () use ($validated) {
+                    
+                    $material = Material::findOrFail($validated['material_id']);
 
-                $material = Material::findOrFail($validated['material_id']);
+                    $quantityChange = $validated['type'] === 'consumption_out'
+                        ? -abs($validated['delta'])
+                        : abs($validated['delta']);
 
-                // Ensure direction (positive for stock in, negative for out)
-                $quantityChange = $validated['type'] === 'consumption_out'
-                    ? -abs($validated['delta'])
-                    : abs($validated['delta']);
-
-                // ✅ Create stock movement
-                $movement = StockMovement::create([
-                    'material_id'   => $validated['material_id'],
-                    'type'          => $validated['type'],
-                    'quantity'      => $quantityChange,
-                    'raison'        => $validated['raison'] ?? null,
-                    'movement_date' => now(),
-                ]);
-
-                // ✅ Update material stock
-                $material->stock_quantity += $quantityChange;
-
-
-                if ($material->stock_quantity < 0) {
-                    throw new \Exception('Stock cannot be negative!');
-                }
-                //notify if the stock is in min
-
-                $material->save();
-
-                // ✅ If this is a consumption movement, log in consumptions
-                if ($validated['type'] === 'consumption_out') {
-                    $unitCost = $material->price ?? 0; // or use your cost logic (FIFO/WAC)
-                    $quantityUsed = abs($validated['delta']);
-
-                    Consumption::create([
-                        'stock_movement_id' => $movement->id,
-                        'material_id'       => $validated['material_id'],
-                        // 'technician_id'     => auth()->id(), // if technician is logged in
-                        'quantity_used'     => $quantityUsed,
-                        'unit_cost'         => $unitCost,
-                        'total_cost'        => $unitCost * $quantityUsed,
+                    // Create stock movement
+                    $movement = StockMovement::create([
+                        'material_id'   => $validated['material_id'],
+                        'type'          => $validated['type'],
+                        'quantity'      => $quantityChange,
+                        'raison'        => $validated['raison'] ?? null,
+                        'movement_date' => now(),
                     ]);
-                }
 
-                DB::commit();
+                    $material->stock_quantity += $quantityChange;
+
+                    if ($material->stock_quantity < 0) {
+                        throw new \Exception('Stock cannot be negative!');
+                    }
+
+                    $material->save();
+
+                    // Log consumption
+                    if ($validated['type'] === 'consumption_out') {
+                        $unitCost = $material->price ?? 0;
+                        $quantityUsed = abs($validated['delta']);
+
+                        Consumption::create([
+                            'stock_movement_id' => $movement->id,
+                            'material_id'       => $validated['material_id'],
+                            'quantity_used'     => $quantityUsed,
+                            'unit_cost'         => $unitCost,
+                            'total_cost'        => $unitCost * $quantityUsed,
+                        ]);
+                    }
+                });
 
                 return redirect()->back()->with('success', 'Stock updated successfully.');
 

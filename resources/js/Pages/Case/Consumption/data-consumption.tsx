@@ -21,37 +21,48 @@ export default function DataConsumption({consumption}:Props) {
 
 
 
+
   return (
         <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>#</TableHead>
+                    <TableHead>Materials Sku</TableHead>
                     <TableHead>Materials Name</TableHead>
                     <TableHead>In Stock</TableHead>
                     <TableHead>Quantity Used</TableHead>
                     <TableHead>Unit Price</TableHead>
                     <TableHead>Total Cost</TableHead>
-                    <TableHead>Last Used</TableHead>
+                    <TableHead>Avg Unit Cost</TableHead>
                     <TableHead className="text-right">
                         Actions
                     </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {consumption.map(item => (
-                <TableRow key={item.id}>
+                {consumption.map((item , index) => (
+                <TableRow key={item.material_id}>
+                    <TableCell>{index + 1 }</TableCell>
                     <TableCell>
-                        {item.materials.name} -
-                            <Badge variant="outline" className="shadow text-sm" >
-                            {item.materials.sku}
-                            </Badge>
+                        <Badge variant="outline" className="shadow text-sm" >
+                            {item.material_sku}
+                        </Badge>
                     </TableCell>
-                    <TableCell>{item.materials.stock_quantity}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>{item.materials.price}</TableCell>
-                    <TableCell>{item.total_cost}</TableCell>
-                    <TableCell>{format(item.stock_movement.last_move_date || "", FORMAT_DATE) || "N/A"}
+                    <TableCell>
 
+                        {item.material_name}
+
+                    </TableCell>
+                    <TableHead>{item.in_stock}</TableHead>
+                    <TableCell>{item.total_quantity}</TableCell>
+                    <TableCell>{parseFloat(item.unit_price).toFixed(2)}</TableCell>
+                    <TableCell>{item.total_cost}</TableCell>
+                    <TableCell>
+                        <Badge variant={"outline"}>
+                            {parseFloat(item.avg_unit_cost).toFixed(2)}
+                        </Badge>
+                    </TableCell>
+                    <TableCell>
                     </TableCell>
 
 
@@ -66,3 +77,8 @@ export default function DataConsumption({consumption}:Props) {
         </Table>
   )
 }
+        // +"material_id": 12
+        // +"material_name": "Halee Owen"
+        // +"total_quantity": 1
+        // +"total_cost": "977.00"
+        // +"avg_unit_cost": "977.0000000000000000"
