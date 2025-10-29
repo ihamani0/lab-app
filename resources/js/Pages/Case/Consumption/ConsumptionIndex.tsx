@@ -14,6 +14,8 @@ import { ArrowLeftRight, FileSpreadsheet } from "lucide-react";
 
 import ExportData from "@/components/export-data";
 import DataConsumption from "./data-consumption";
+import FilterConsumption from "./filter-consumptio";
+import ExportConsumption from "./export-consumption";
 
 
 
@@ -22,7 +24,7 @@ import DataConsumption from "./data-consumption";
 
 type Props = {
     consumptions :  { data: ConsumptionType[]; links:  PaginationLink[]  } ,
-    filters ?: FiltersQuery,
+    filters : FiltersQuery,
 
 }
 
@@ -40,7 +42,7 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 
 
-function Consumption({consumptions} : Props) {
+function Consumption({consumptions , filters} : Props) {
 
     console.log(consumptions);
     const { flash }  =  usePage<FalshProps>().props ;
@@ -81,10 +83,9 @@ function Consumption({consumptions} : Props) {
                     <CardContent>
                         {/* Search inpute */}
 
-                        {/* <FilterInvoice
-                            doctors={doctors}
+                        <FilterConsumption
                             filters={filters}
-                        /> */}
+                        />
 
 
 
@@ -99,7 +100,7 @@ function Consumption({consumptions} : Props) {
 
                                 {/* Export */}
                                 <div className="self-start">
-                                    {/* <ExportData  url="/prosthesis-invoice/export"  params={params.toString()}/> */}
+                                    <ExportConsumption  filter={filters}/>
                                 </div>
                         </CardFooter>
                     </Card>

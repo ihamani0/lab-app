@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Prosthesis;
 
+use App\Exports\ConsumptionExport;
+use App\Exports\PdfExporter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ConsumptionResource;
 use App\Models\Consumption;
+use App\Repositories\ConsumptionRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,15 +31,16 @@ class ConsumptionController extends Controller{
 
         return Inertia::render('Case/Consumption/ConsumptionIndex' , [
             'consumptions' => $consumptions ,
+            'filters' => $request->only(['search' , 'date_from' , 'date_to'])
         ]);
     }
 
 
     private function aggregatedConsumptions(Request $request){
 
-        $start = $request->get('start_date') ? Carbon::parse($request->get('start_date'))->startOfDay() : now()->startOfMonth();
+        $start = $request->get('date_from') ? Carbon::parse($request->get('start_date'))->startOfDay() : now()->startOfMonth();
 
-        $end   = $request->get('end_date')   ? Carbon::parse($request->get('end_date'))->endOfDay()   : now()->endOfMonth();
+        $end   = $request->get('date_to')   ? Carbon::parse($request->get('end_date'))->endOfDay()   : now()->endOfMonth();
 
 
         $perPage = (int) $request->get('per_page', 15);
@@ -73,5 +77,27 @@ class ConsumptionController extends Controller{
             $query->paginate($perPage);
 
             return $query->paginate($perPage);
+    }
+
+
+    public function export(Request $request , ConsumptionRepository $repo){
+
+        // dd($request->all());
+        $start = $request->get('date_from') ?? now()->startOfMonth();
+        $end   = $request->get('date_to') ?? now()->endOfMonth();
+        $search = $request->get('q');
+        $format = $request->get('format', 'xlsx'); // or 'pdf'
+
+        $data = $repo->aggregated($start , $end , $search)->get();
+
+        // dd($data->get());
+
+        $filename = 'consumptions_' . now()->format('Ymd_His') . '.' . $format;
+
+        if($format == 'pdf'){
+            return PdfExporter::Download('Pdf/ConsumptionReport' , $filename , $data );
+        }
+
+        return ConsumptionExport::download($filename , $data);
     }
 }

@@ -108,7 +108,8 @@ Route::get("/prosthesis-invoice/export/{format}" ,[InvoiceController::class , 'e
 
 
 Route::resource("/prosthesis-consumption" ,ConsumptionController::class)->except('show');
-
+Route::get('/prosthesis-consumption/export', [ConsumptionController::class, 'export'])
+    ->name('consumptions.export');
 
 //`/prosthesis-invoice/${invoice.id}/download`
 ///prosthesis-consumption   //prosthesis-service ///prosthesis-invoice
