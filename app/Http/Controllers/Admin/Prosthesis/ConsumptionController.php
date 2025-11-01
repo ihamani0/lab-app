@@ -38,14 +38,14 @@ class ConsumptionController extends Controller{
 
     private function aggregatedConsumptions(Request $request){
 
-        $start = $request->get('date_from') ? Carbon::parse($request->get('start_date'))->startOfDay() : now()->startOfMonth();
+        $start = $request->get('date_from') ? Carbon::parse($request->get('date_from'))->startOfDay() : now()->startOfMonth();
 
-        $end   = $request->get('date_to')   ? Carbon::parse($request->get('end_date'))->endOfDay()   : now()->endOfMonth();
+        $end   = $request->get('date_to')   ? Carbon::parse($request->get('date_to'))->endOfDay()   : now()->endOfMonth();
 
 
         $perPage = (int) $request->get('per_page', 15);
 
-        $search = $request->get('q');
+        $search = $request->get('search');
 
 
         $query = DB::table('consumptions')
@@ -69,7 +69,8 @@ class ConsumptionController extends Controller{
 
 
         if ($search) {
-            $query->where('materials.name', 'LIKE', "%{$search}%");
+            $query->where('materials.name', 'LIKE', "%{$search}%")
+                ->orWhere('materials.sku', 'LIKE', "%{$search}%");
         }
 
             $query->orderByDesc('total_quantity');

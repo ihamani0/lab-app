@@ -36,7 +36,7 @@ export default function FilterConsumption({filters} : Props) {
     const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
     const submitFilter = ()=>{
-        router.get('/prosthesis-case' , {
+        router.get('/prosthesis-consumption' , {
                 search : searchTerm ,
                 date_from : dateRange?.from?.toISOString() ,
                 date_to : dateRange?.to?.toISOString() ,
@@ -93,7 +93,7 @@ export default function FilterConsumption({filters} : Props) {
 
 
             <SearchInput
-                placeholder="search by invoice number"
+                placeholder="search by name or sku"
                 handleChange={(e) => handleSearchChange(e.target.value)}
                 searchTerm={searchTerm}
                 defaultValue={filters.search || ""}
@@ -106,7 +106,7 @@ export default function FilterConsumption({filters} : Props) {
                         <Button
                             className="cursor-pointer"
                             variant="destructive"
-                            onClick={() => router.get("/prosthesis-case")}
+                            onClick={() => router.get("/prosthesis-consumption")}
                             >
                             <Recycle />
                         </Button>
