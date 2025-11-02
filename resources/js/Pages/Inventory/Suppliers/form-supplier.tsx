@@ -66,11 +66,11 @@ function FormSuppliers({ supplier, method, action }: Props) {
             <FormField
                 name="name"
                 label="Name"
-                placeholder="Doctor Name"
+                placeholder="Supplier Name"
                 value={form.data.name}
                 error={clientErrors?.name || form.errors?.name}
                 required
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("name", value);
                     setClientErrors((prev) => ({ ...prev, name: "" }));
                 }}
@@ -81,7 +81,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="Email "
                 value={form.data.email}
                 error={clientErrors?.email || form.errors?.email}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("email", value);
                     setClientErrors((prev) => ({ ...prev, email: "" }));
                 }}
@@ -92,7 +92,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="+213697096705"
                 value={form.data.phone}
                 error={clientErrors?.phone || form.errors?.phone}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("phone", value);
                     setClientErrors((prev) => ({ ...prev, phone: "" }));
                 }}
@@ -104,7 +104,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="address "
                 value={form.data.address}
                 error={clientErrors?.address || form.errors?.address}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("address", value);
                     setClientErrors((prev) => ({ ...prev, address: "" }));
                 }}
@@ -126,7 +126,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="http://facebook.com/ "
                 value={form.data.facebook}
                 error={clientErrors?.facebook || form.errors?.facebook}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("facebook", value);
                     setClientErrors((prev) => ({ ...prev, facebook: "" }));
                 }}
@@ -137,7 +137,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="http://instgrame.com/ "
                 value={form.data.instagram}
                 error={clientErrors?.instagram || form.errors?.instagram}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("instagram", value);
                     setClientErrors((prev) => ({ ...prev, instgrame: "" }));
                 }}
@@ -149,7 +149,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="whatsapp "
                 value={form.data.whatsapp}
                 error={clientErrors?.whatsapp || form.errors?.whatsapp}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("whatsapp", value);
                     setClientErrors((prev) => ({ ...prev, whatsapp: "" }));
                 }}
@@ -161,7 +161,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 placeholder="website.com "
                 value={form.data.website}
                 error={clientErrors?.website || form.errors?.website}
-                onChange={(value) => {
+                onChangeEvent={(value) => {
                     form.setData("website", value);
                     setClientErrors((prev) => ({ ...prev, website: "" }));
                 }}
@@ -187,7 +187,7 @@ function FormSuppliers({ supplier, method, action }: Props) {
                 className="w-full cursor-pointer py-5"
                 disabled={form.processing}
             >
-                {form.processing ? "Saving..." : "Save Category"}
+                {form.processing ? "Saving..." : "Save"}
             </Button>
         </form>
     );

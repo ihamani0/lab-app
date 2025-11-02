@@ -20,6 +20,7 @@ export interface FiltersQuery  {
         amount_max ?:string,
         date_from ?: string ,
         date_to ?: string
+        per_page?:string
     }
 
 export interface User {

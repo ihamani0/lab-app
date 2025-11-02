@@ -15,7 +15,7 @@ type Props = {
 
 function Pagination({ links }: Props) {
   return (
-    <div className="flex justify-center gap-2 mt-4">
+    <div className="flex justify-center gap-2 ">
       {links.map((link, i) =>
         link.url ? (
           <Link

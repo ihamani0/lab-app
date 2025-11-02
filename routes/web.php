@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Case\CaseController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HumenResource\PatientController;
 use App\Http\Controllers\Admin\HumenResource\DoctorController;
 use App\Http\Controllers\Admin\HumenResource\TechnicienController;
@@ -21,9 +22,7 @@ Route::get('/' , function(){
     return redirect()->route('dashboard');
 });
 
-Route::get('/dashboard', function () {
-    return \Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
 
 
 

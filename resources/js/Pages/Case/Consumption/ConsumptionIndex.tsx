@@ -16,6 +16,7 @@ import ExportData from "@/components/export-data";
 import DataConsumption from "./data-consumption";
 import FilterConsumption from "./filter-consumptio";
 import ExportConsumption from "./export-consumption";
+import PerPage from "@/components/per-page";
 
 
 
@@ -93,15 +94,21 @@ function Consumption({consumptions , filters} : Props) {
                         <DataConsumption  consumption={consumptions.data}/>
                     </CardContent>
 
-                        <CardFooter className="flex flex-col ">
-                                <div className="self-end">
+                        <CardFooter className="flex flex-col mt-4 ">
+                                <div className="self-end flex gap-x-2 items-center">
+                                    <PerPage
+                                    url="/prosthesis-consumption"
+                                    defaultPerPage={filters.per_page ?? '15'} />
                                     <Pagination  links={consumptions.links}/>
                                 </div>
 
+                                {/* per page */}
+
                                 {/* Export */}
-                                <div className="self-start">
+                                <div className="self-start ">
                                     <ExportConsumption  filter={filters}/>
                                 </div>
+
                         </CardFooter>
                     </Card>
 

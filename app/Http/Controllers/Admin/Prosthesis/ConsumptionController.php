@@ -31,7 +31,7 @@ class ConsumptionController extends Controller{
 
         return Inertia::render('Case/Consumption/ConsumptionIndex' , [
             'consumptions' => $consumptions ,
-            'filters' => $request->only(['search' , 'date_from' , 'date_to'])
+            'filters' => $request->only(['search' , 'date_from' , 'date_to' , 'per_page'])
         ]);
     }
 
