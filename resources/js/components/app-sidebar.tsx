@@ -12,22 +12,22 @@ import {
     ArrowLeftRightIcon,
     Box,
     Boxes,
-    BoxIcon,
+    ChartAreaIcon,
     ClipboardList,
-    ClipboardPlus,
     Columns3,
     Container,
+    Euro,
     FileText,
     HeartPulse,
     Hospital,
     LayoutGrid,
     Package,
+    Sheet,
     ShoppingBag,
     ShoppingCart,
     Stethoscope,
     Tag,
     Truck,
-    UserCircle,
     Wrench,
 } from "lucide-react";
 
@@ -132,6 +132,25 @@ const CaseNavItems: NavItem[] = [
     }
 ]
 
+
+const ReportItems : NavItem[] = [
+    {
+        title : 'Inventory ',
+        href : '/report/inventory',
+        icon : Sheet
+    },
+    {
+        title : 'Finacial ',
+        href : '/report/financial',
+        icon : Euro
+    } ,
+    {
+        title : 'Cases ',
+        href : '/report/production',
+        icon : Box
+    }
+]
+
 //<Columns3 />
 
 
@@ -166,6 +185,10 @@ export function AppSidebar() {
                     <NavMain  items={CaseNavItems}  />
                 </NavCollapsible>
 
+
+                <NavCollapsible icon={ChartAreaIcon} titleCollapsible="Reports" >
+                    <NavMain  items={ReportItems}  />
+                </NavCollapsible>
 
                 {/* --------------------------------------------------- */}
 

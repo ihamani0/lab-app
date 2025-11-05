@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\Inventory\SuppliersController;
 use App\Http\Controllers\Admin\Prosthesis\ConsumptionController;
 use App\Http\Controllers\Admin\Prosthesis\InvoiceController;
 use App\Http\Controllers\Admin\Prosthesis\ServiceController;
+use App\Http\Controllers\Admin\Report\CaseController as ReportCaseController;
+use App\Http\Controllers\Admin\Report\FinancialController;
+use App\Http\Controllers\Admin\Report\InventoryController;
 use App\Http\Controllers\Admin\Stock\StockController;
 use App\Models\Service;
 use Illuminate\Support\Facades\Route;
@@ -110,8 +113,12 @@ Route::resource("/prosthesis-consumption" ,ConsumptionController::class)->except
 Route::get('/prosthesis-consumption/export', [ConsumptionController::class, 'export'])
     ->name('consumptions.export');
 
-//`/prosthesis-invoice/${invoice.id}/download`
-///prosthesis-consumption   //prosthesis-service ///prosthesis-invoice
+
+
+Route::get('/report/financial' , [FinancialController::class , 'index']);
+Route::get('/report/cases' , [ReportCaseController::class , 'index']);
+Route::get('/report/inventory' , [InventoryController::class , 'index']);
+
 
 
 // Route::middleware(['role:super-admin', 'active'])
@@ -126,8 +133,4 @@ Route::get('/prosthesis-consumption/export', [ConsumptionController::class, 'exp
 
 
 
-Route::get('/test', function () {
 
-    return \Inertia\Inertia::render('Test' );
-
-});

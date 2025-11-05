@@ -44,7 +44,7 @@ function RevenueChart({ labels, income, expenses }: RevenueChartProps) {
                     options={options}
                     series={series}
                     type="line"
-                    // height={320}
+                    height={520}
                 />
             </CardContent>
         </Card>
