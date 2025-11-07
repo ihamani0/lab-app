@@ -23,7 +23,7 @@ class DoctorController extends Controller
         }
 
         $doctors = $query->orderBy('id', 'desc')
-                    ->paginate(10)
+                    ->paginate($request->get('per_page', 15))
                     ->appends($request->only('search'))
                     ->through(fn ($doctor) => [
                     'id'     => $doctor->id,
@@ -36,7 +36,11 @@ class DoctorController extends Controller
                     'update' => $doctor->updated_at ? $doctor->updated_at->format('d/m/Y') : null,
                 ]);
 
-         return Inertia::render('Doctor/doctor' , [ "doctors" => $doctors ]);
+         return Inertia::render('HumanResource/Doctor/doctor' ,
+         [
+            "doctors" => $doctors ,
+            'filters' => $request->only(['search' , 'per_page'])
+        ]);
     }
 
     /**

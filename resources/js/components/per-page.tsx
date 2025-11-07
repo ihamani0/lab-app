@@ -31,7 +31,7 @@ function PerPage({url , defaultPerPage = '15'} : Props  ) {
 
   return (
     <Select value={defaultPerPage} onValueChange={handleSubmitPage} >
-    <SelectTrigger className="w-[80px]">
+    <SelectTrigger className="w-[70px]">
         <SelectValue placeholder="page" />
     </SelectTrigger>
     <SelectContent>

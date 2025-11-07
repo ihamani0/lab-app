@@ -3,12 +3,36 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Http\Controllers\Controller;
+use App\Services\inventorryReportService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class InventoryController extends Controller
 {
-    public function index(){
+    public function index(Request $request , inventorryReportService $service){
 
+
+        [$from,$to] = $service->getDateRange($request);
+
+        return Inertia::render('Report/Inventory/Index' , [
+
+            'kpis' => $service->getKpis($from,$to),
+
+            'charts' => [
+                'incoming' => $service->getIncomingMaterilas($from,$to),
+                'outgoing' => $service->getOutgoingMaterials($from,$to),
+                'stock_value' => $service->getStockValueByCategory()
+            ] ,
+            'tables' => [
+                'currentStock' => $service->getCurrentStock($request),
+                'purchaseHistory' => $service->getPurchaseHistory($from , $to),
+                'stockMovements' => $service->getStockMovements($request),
+            ]
+
+
+        ]);
     }
 }
 

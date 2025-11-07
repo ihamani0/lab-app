@@ -29,7 +29,7 @@ class TechnicienController extends Controller
                                 ->paginate(10)
                                     ->appends($request->only('search'));
 
-        return Inertia::render('Technicien/technicien' , [ "techniciens" => $techniciens ]);
+        return Inertia::render('HumanResource/Technicien/technicien' , [ "techniciens" => $techniciens ]);
     }
 
 
@@ -120,3 +120,5 @@ class TechnicienController extends Controller
     }
 
 }
+
+

@@ -116,7 +116,7 @@ Route::get('/prosthesis-consumption/export', [ConsumptionController::class, 'exp
 
 
 Route::get('/report/financial' , [FinancialController::class , 'index']);
-Route::get('/report/cases' , [ReportCaseController::class , 'index']);
+Route::get('/report/production' , [ReportCaseController::class , 'index']);
 Route::get('/report/inventory' , [InventoryController::class , 'index']);
 
 

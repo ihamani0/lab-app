@@ -44,7 +44,7 @@ class PatientController extends Controller
 
 
 
-         return Inertia::render('Patient/patient', [
+         return Inertia::render('HumanResource/Patient/patient', [
                     'doctors' => DoctorResource::collection(Doctor::all()),
                     'patients' => $patients,
                     'filters'  => $request->only('search'),
@@ -70,7 +70,7 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index');
     }
- 
+
 
     /**
      * Update the specified resource in storage.

@@ -49,11 +49,7 @@ const mainNavItems: NavItem[] = [
 ];
 
 const secondaryNavItems: NavItem[] = [
-    {
-        title: 'Patients',
-        href: "/patients",
-        icon: HeartPulse,
-    },
+
     {
         title: 'Doctors',
         href: "/doctors",
@@ -64,6 +60,11 @@ const secondaryNavItems: NavItem[] = [
         href: "/techniciens",
         icon: Wrench,
     },
+    {
+        title: 'Patients',
+        href: "/patients",
+        icon: HeartPulse,
+    }
 ]
 
 const InventoryNavItems: NavItem[] = [

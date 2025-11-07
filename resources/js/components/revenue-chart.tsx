@@ -8,10 +8,11 @@ interface RevenueChartProps {
   labels: string[];
   income: number[];
   expenses: number[];
+  profit ?: number[];
 }
 
 
-function RevenueChart({ labels, income, expenses }: RevenueChartProps) {
+function RevenueChart({ labels, income, expenses , profit=[]}: RevenueChartProps) {
   const options: ApexChartProps['options'] = {
     chart: {
       id: 'revenue-expense',
@@ -31,6 +32,7 @@ function RevenueChart({ labels, income, expenses }: RevenueChartProps) {
   const series: ApexChartProps['series'] = [
     { name: 'Income', data: income },
     { name: 'Expenses', data: expenses },
+    { name: 'Profit', data: profit }
   ];
 
   return (

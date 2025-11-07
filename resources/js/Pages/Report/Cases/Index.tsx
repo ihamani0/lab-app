@@ -1,195 +1,163 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Activity,  Coins,  ListCollapse, Package2, TrendingDown, TrendingUp } from "lucide-react"
-import AppLayout from "@/Layouts/AppLayout";
-import { Case, InvoiceCase, type BreadcrumbItem } from "@/Types";
-import KpiCard from "@/components/kpi-card";
-import RevenueChart from "@/components/revenue-chart";
-import { FORMAT_DATE } from "@/constants";
-import { format } from "date-fns";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import MetricCard from "@/components/ui/metric-card";
-import DonutChart from "@/components/donut-chart";
-import { Badge } from "@/components/ui/badge";
+import { Head, usePage } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
+import { type BreadcrumbItem } from '@/Types';
+import KpiCard from '@/components/kpi-card';
+import ChartCard from '@/components/chart-card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import FilterDate from '@/components/filter-date';
+import { Users, Activity, Box, Zap } from 'lucide-react';
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard',
-            href: '/',
-        },
-        {
-            title: 'Cases Report',
-            href: '/',
-        },
-    ];
+const breadcrumbs: BreadcrumbItem[] = [
+  { title: 'Dashboard', href: '/' },
+  { title: 'Production / Cases', href: '/report/production' },
+];
 
-type  PropsType = {
-        kpis : {
-            totalIncome : number;
-            totalExpenses : number;
-            lowStockCount : number;
-            activeCases : number;
-        } ,
-        charts : {
-            labels : string[] ,
-            income : number[] ,
-            expenses : number[] ,
-        } ,
-        recentCases : Case[] ,
-        recentPayments : InvoiceCase[] ,
-        daily : {
-            income : number[]
-            expenses : number[]
-        },
-        donut : {
-            labels : string[]
-            series : number[]
-        }
+type PropsType = {
+  kpis: {
+    totalCases: number;
+    activeCases: number;
+    averageCaseValue: number;
+    techniciansActive: number;
+  };
+  charts: {
+    casesByDoctor: { doctor_id: number; doctor_name: string; total: number }[];
+    completionRate: { delivered: number; remaining: number };
+    // technicianProductivity: { technician_id: number; technician_name: string; total_completed: number }[];
+    serviceUsage: { service_id: number; service_name: string; total_used: number }[];
+  };
+  tables: {
+    currentCases: {
+      id: number;
+      case_number: string;
+      doctor_name: string;
+      patient_name: string;
+      status: string;
+      total_cost: number;
+      received_date: string | null;
+      delivered_date: string | null;
+    }[];
 
-}
+    materialConsumptions: {
+      id: number;
+      case_number: string;
+      material_name: string;
+      quantity_used: number;
+      cost: number;
+      date: string;
+    }[];
+  };
+};
 
-function Dashboard() {
+export default function Dashboard() {
+  const { kpis, charts, tables } = usePage<PropsType>().props;
 
-    const { kpis, charts, recentPayments, recentCases , daily , donut } = usePage<PropsType>().props;
+  // Chart data transforms
+  const doctorLabels = charts.casesByDoctor.map(d => d.doctor_name);
+  const doctorSeries = charts.casesByDoctor.map(d => d.total);
 
+//   const techLabels = charts.technicianProductivity.map(t => t.technician_name);
+//   const techSeries = charts.technicianProductivity.map(t => t.total_completed);
+
+  const serviceLabels = charts.serviceUsage.map(s => s.service_name);
+  const serviceSeries = charts.serviceUsage.map(s => s.total_used);
+
+  const donutLabels = ['Delivered', 'Remaining'];
+  const donutSeries = [charts.completionRate.delivered, charts.completionRate.remaining];
 
   return (
-        <AppLayout  breadcrumbs={breadcrumbs}>
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Production / Case Dashboard" />
 
-        <div className="space-y-3">
-            <Head title="Inventory Report" />
+      <div className="space-y-6 p-4">
+        
+        <FilterDate url="/report/production" />
 
-            <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-
-                    <MetricCard
-                        title="Income"
-                        value ={kpis.totalIncome }
-                        data={daily.income}
-                        Icon={TrendingUp}
-                    />
-
-                    <MetricCard
-                        title="Expenses"
-                        value ={kpis.totalExpenses }
-                        data={daily.expenses}
-                        Icon={TrendingDown}
-                    />
-
-                    <KpiCard title="Low Stock Items" value={kpis.lowStockCount}
-                        Icon={Package2}  />
-                    <KpiCard title="Active Cases" value={kpis.activeCases} Icon={Activity} />
-                </div>
-
-
-            </div>
-
-
-            <div className="flex-1 overflow-x-auto rounded-xl p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2   ">
-
-                    <RevenueChart
-                    labels={charts.labels}
-                    income={charts.income}
-                    expenses={charts.expenses}
-
-                    />
-
-                    <DonutChart
-                        title="Top 5 Services (This Month)"
-                        labels={donut.labels}
-                        series={donut.series}
-                        />
-                </div>
-            </div>
-
-            <div className="overflow-x-auto rounded-xl p-4">
-            <Card className="">
-                <CardHeader className='flex items-center gap-x-3'>
-                <ListCollapse size={35} />
-                <h3 className="text-lg font-medium text-foreground">{"Recent Cases (30 days)"}</h3>
-                </CardHeader>
-                <CardContent className="overflow-auto">
-                    <Table className="w-full text-sm">
-                        <TableHeader>
-                            <TableRow>
-                            <TableHead className="text-left">Case Number</TableHead>
-                            <TableHead className="text-left">Doctor</TableHead>
-                            <TableHead className="text-left">Patient</TableHead>
-                            <TableHead className="text-left">received_date</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                            <TableBody>
-                            {recentCases.map(item => (
-                            <TableRow key={item.id}>
-                            <TableCell>
-                                <Link href={`/prosthesis-case/${item.id}/edit`}>
-                                <Badge variant={"outline"}>
-                                    {item.case_number}
-                                </Badge>
-                                </Link>
-                            </TableCell>
-                            <TableCell>{item.doctor.name}</TableCell>
-                            <TableCell>{item.patient.name}</TableCell>
-                            <TableCell>{item.received_date && format(item.received_date , FORMAT_DATE)}</TableCell>
-                            </TableRow>
-                            ))}
-                            </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-            </div>
-
-
-            <div className="overflow-x-auto rounded-xl p-4">
-            <Card className="">
-                <CardHeader className='flex items-center gap-x-3'>
-                <Coins size={35} />
-                <h3 className="text-lg font-medium text-foreground">{"Recent Payments (30 days)"}</h3>
-                </CardHeader>
-                <CardContent className="overflow-auto">
-                    <Table className="w-full text-sm">
-                        <TableHeader>
-                            <TableRow>
-                            <TableHead className="text-left"># Invocie</TableHead>
-                            <TableHead className="text-left">Case Number</TableHead>
-                            <TableHead className="text-left">Doctor</TableHead>
-                            <TableHead className="text-left">Net Amount</TableHead>
-                            <TableHead className="text-left">received_date</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                            <TableBody>
-                            {recentPayments.map(item => (
-                            <TableRow key={item.id}>
-                            <TableCell>
-                                <Link href={`prosthesis-invoice/${item.id}/edit`}>
-                                <Badge variant={"outline"}>
-                                    {item.invoice_number}
-                                </Badge>
-                                </Link></TableCell>
-                            <TableCell>
-                                <Link href={`/prosthesis-case/${item.case.id}/edit`}>
-                                <Badge variant={"outline"}>
-                                    {item.case.case_number}
-                                </Badge>
-                                </Link>
-                            </TableCell>
-                            <TableCell>{item.case.doctor.name}</TableCell>
-                            <TableCell>{item.net_amount}</TableCell>
-                            <TableCell>{item.invoice_date && format(item.invoice_date , FORMAT_DATE)}</TableCell>
-                            </TableRow>
-                            ))}
-                            </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-            </div>
-
+        {/* KPIs */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <KpiCard title="Total Cases" value={kpis.totalCases} Icon={Box} variant="info" />
+          <KpiCard title="Active Cases" value={kpis.activeCases} Icon={Activity} variant="warning" />
+          <KpiCard title="Avg Case Value" value={kpis.averageCaseValue} Icon={Zap}  />
+          <KpiCard title="Technicians Active" value={kpis.techniciansActive} Icon={Users} variant="success" />
         </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ChartCard labels={doctorLabels} series={doctorSeries} title="Cases by Doctor" type="bar" />
+          <ChartCard labels={donutLabels} series={donutSeries} title="Case Completion Rate" type="donut" />
+          {/* <ChartCard labels={techLabels} series={techSeries} title="Technician Productivity" type="bar" /> */}
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          <ChartCard labels={serviceLabels} series={serviceSeries} title="Service Usage Frequency" type="bar" />
+          {/* placeholder or small KPI chart could go here */}
+        </div>
+
+        {/* Tables */}
+        <div className="grid grid-cols-1 gap-8">
+          {/* Current Cases */}
+          <Card>
+            <CardHeader><CardTitle>Current Cases</CardTitle></CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Case #</TableHead>
+                    <TableHead>Doctor</TableHead>
+                    <TableHead>Patient</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Received / Delivered</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tables.currentCases.map(c => (
+                    <TableRow key={c.id}>
+                      <TableCell>{c.case_number}</TableCell>
+                      <TableCell>{c.doctor_name}</TableCell>
+                      <TableCell>{c.patient_name}</TableCell>
+                      <TableCell>
+                        <Badge variant={c.status === 'delivered' ? 'success' : 'warning'}>{c.status}</Badge>
+                      </TableCell>
+                      <TableCell>{c.total_cost} DA</TableCell>
+                      <TableCell>{c.received_date ?? '-'} / {c.delivered_date ?? '-'}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+
+          {/* Material Consumptions */}
+          <Card>
+            <CardHeader><CardTitle>Material Consumptions</CardTitle></CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Material</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Cost</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tables.materialConsumptions.map((m , i) => (
+                    <TableRow key={i}>
+                      <TableCell>{m.date}</TableCell>
+                      <TableCell>{m.material_name}</TableCell>
+                      <TableCell>{m.quantity_used}</TableCell>
+                      <TableCell>{m.cost} DA</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </AppLayout>
-
-  )
+  );
 }
-
-export default Dashboard;

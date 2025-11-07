@@ -1,5 +1,5 @@
 import AppLayout from "@/Layouts/AppLayout"
-import { BreadcrumbItem, type Doctor as DoctorType, FalshProps } from "@/Types"
+import { BreadcrumbItem, type Doctor as DoctorType, FalshProps, FiltersQuery } from "@/Types"
 import { type PaginationLink} from "@/Types";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
@@ -13,10 +13,12 @@ import { Separator } from "@/components/ui/separator";
 
 import SearchInput from "@/components/search-inpute";
 import { useDebouncedSearch } from "@/hooks/use-debouncedSearch";
+import PerPage from "@/components/per-page";
 
 
 type DoctorProps = {
     doctors :  { data: DoctorType[]; links: PaginationLink[] }
+    filters : FiltersQuery
 }
 
 
@@ -33,7 +35,7 @@ const breadcrumbs : BreadcrumbItem[] = [
 
 
 
-function Doctor({doctors} : DoctorProps) {
+function Doctor({doctors , filters} : DoctorProps) {
 
     const { flash }  =  usePage<FalshProps>().props ;
 
@@ -77,6 +79,10 @@ function Doctor({doctors} : DoctorProps) {
                         <DataDoctor doctors={doctors.data} />
                     </CardContent>
                     <CardFooter className="flex justify-end">
+                            <PerPage
+                                url="/doctors"
+                                defaultPerPage={filters.per_page ?? "15"}
+                            />
                             <Pagination  links={doctors.links}/>
                     </CardFooter>
                     </Card>
