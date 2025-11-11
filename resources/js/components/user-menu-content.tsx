@@ -11,7 +11,7 @@ function UserMenuContent() {
 
     const handleLogout = ()=>{
         router.flushAll();
-        router.visit('/login');
+        router.post('/logout');
     }
   return (
     <>
@@ -36,16 +36,14 @@ function UserMenuContent() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-                <Link
+                <button
                     className="block w-full"
-                    href="/logout"
-                    as="button"
                     onClick={handleLogout}
                     data-test="logout-button"
                 >
                     <LogOut className="mr-2" />
                     Log out
-                </Link>
+                </button>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
                 <ThemeToggle />

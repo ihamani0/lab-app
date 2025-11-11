@@ -15,7 +15,7 @@ function CreateDoctor() {
                 Create Doctor <PlusCircle />
                 </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+        <SheetContent side="right" className="" >
             <SheetHeader>
             <SheetTitle>Add New Doctor</SheetTitle>
             <SheetDescription>

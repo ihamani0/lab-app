@@ -51,5 +51,34 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdminstrator():bool{
+        return $this->hasRole('super-admin');
+    }
+    
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeSuspended($query)
+    {
+        return $query->whereNotNull('suspended_at');
+    }
+
+    public function scopeNotSuspended($query)
+    {
+        return $query->whereNull('suspended_at');
+    }
+
+    public function doctor(){
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function patient(){
+        return $this->hasOne(Patient::class);
+    }
+
+
 
 }

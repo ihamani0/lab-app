@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Case\CaseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HumenResource\AccountingController;
 use App\Http\Controllers\Admin\HumenResource\PatientController;
 use App\Http\Controllers\Admin\HumenResource\DoctorController;
 use App\Http\Controllers\Admin\HumenResource\TechnicienController;
@@ -25,23 +26,32 @@ Route::get('/' , function(){
     return redirect()->route('dashboard');
 });
 
-Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
+});
 
 
 
 //Resource Humen
 Route::resource('/patients' , PatientController::class)->except(['create' , 'show' ,'edit']);
-Route::resource('/doctors' , DoctorController::class)->except(['create' , 'show' , 'edit' ]);
 
+Route::resource('/doctors' , DoctorController::class)->except(['create' , 'show' , 'edit' ]);
+Route::put('/doctors/{id}/toggle-active' , [DoctorController::class , 'toggleActive']);
 
 
 Route::resource('/techniciens' , TechnicienController::class)
             ->except(['create' , 'show' , 'edit', 'update']);
+
 Route::put('/techniciens/{user}' , [TechnicienController::class , 'update']);
 Route::put('/techniciens/{id}/toggle-active' , [TechnicienController::class , 'toggleActive']);
 
+
+Route::resource('/accounting' , AccountingController::class)
+            ->except(['create' , 'show' , 'edit', 'update']);
+Route::put('/accounting/{user}' , [AccountingController::class , 'update'])->name('accounting.update');
+Route::put('/accounting/{id}/toggle-active' , [AccountingController::class , 'toggleActive'])
+->name('accounting.toggleActive');
 
 //Invitory
 
@@ -132,5 +142,11 @@ Route::get('/report/inventory' , [InventoryController::class , 'index']);
 //     });
 
 
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::get('dashboard', function () {
+//         return Inertia::render('dashboard');
+//     })->name('dashboard');
+// });
 
-
+// require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';

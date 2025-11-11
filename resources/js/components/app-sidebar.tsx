@@ -28,6 +28,7 @@ import {
     Stethoscope,
     Tag,
     Truck,
+    UserStarIcon,
     Wrench,
 } from "lucide-react";
 
@@ -37,6 +38,7 @@ import { NavItem } from "@/Types";
 import NavMain from "./nav-main";
 import NavCollapsible from "./nav-collapsible";
 import NavUser from "./nav-user";
+import { route } from "ziggy-js";
 
 
 
@@ -64,6 +66,11 @@ const secondaryNavItems: NavItem[] = [
         title: 'Patients',
         href: "/patients",
         icon: HeartPulse,
+    },
+    {
+        title: 'Accounting',
+        href: route('accounting.index'),
+        icon: UserStarIcon,
     }
 ]
 

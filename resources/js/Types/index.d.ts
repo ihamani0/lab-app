@@ -3,6 +3,13 @@ import { LucideIcon } from "lucide-react";
 
 
 
+export interface SharedData {
+    name: string;
+    quote: { message: string; author: string };
+    auth: Auth;
+    sidebarOpen: boolean;
+    [key: string]: unknown;
+}
 
 export interface FiltersQuery  {
         search ?: string;
@@ -54,8 +61,10 @@ export interface Doctor   {
     name: string;
     phone?: number;
     address?: string;
-    email ?:string;
     cabine ?: string;
+    specialty ?: string;
+    in_clinic : boolean;
+    user : User;
 }
 
 export interface Patient   {

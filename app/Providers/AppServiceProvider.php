@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -22,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        Gate::before(function($user , $ability){
+            return $user->isAdminstrator() ? true : null;
+        });
 
         if (request()->getSchemeAndHttpHost()) {
             URL::forceRootUrl(request()->getSchemeAndHttpHost());

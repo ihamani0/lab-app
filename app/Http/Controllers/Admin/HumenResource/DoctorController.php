@@ -6,6 +6,8 @@ use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class DoctorController extends Controller
@@ -15,7 +17,7 @@ class DoctorController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Doctor::query();
+        $query = Doctor::query()->with('user');
 
         if($request->filled('search')){
             $search = strtolower($request->search);
@@ -32,6 +34,15 @@ class DoctorController extends Controller
                     'phone' => $doctor->phone,
                     'email' => $doctor->email,
                     'cabine' => $doctor->cabine,
+                    
+                    'user' => [
+                        'id' => $doctor->user->id,
+                        'email' => $doctor->user->email,
+                        'is_active' => $doctor->user->is_active,
+                    ],
+                    'specialty' => $doctor->specialty,
+                    'in_clinic' => $doctor->in_clinic,
+
                     'create' => $doctor->created_at->format('d/m/Y'),
                     'update' => $doctor->updated_at ? $doctor->updated_at->format('d/m/Y') : null,
                 ]);
@@ -48,6 +59,7 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => [
                 'required',
@@ -56,12 +68,34 @@ class DoctorController extends Controller
                 Rule::unique('doctors', 'name'),
              ],
             'phone' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
+            'email' => 'required|email|max:255',
             'address' => 'nullable|string|max:255',
             'cabine' => 'nullable|string|max:255',
-]);
+            'in_clinic' => ['boolean' , 'required'],
+        ]);
 
-        Doctor::create($validated);
+
+        // 2. Create the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make('ChangeMe123@'),
+            'is_active' => false,
+        ]);
+
+
+         $user->assignRole('doctor');
+
+        Doctor::create([
+            'user_id' => $user->id,
+            'name' => $validated['name'],
+            'phone' => $validated['phone'] ?? null,
+            'address' => $validated['address'] ?? null,
+            'cabine' => $validated['cabine'] ?? null,
+            'in_clinic' => $validated['in_clinic'],
+            'specialty' => 'nullable|string|max:255',
+
+        ]);
 
         return redirect()->route('doctors.index')->with('success', 'Doctors created successfully.');
     }
@@ -85,6 +119,10 @@ class DoctorController extends Controller
         'email' => 'nullable|email|max:255',
         'address' => 'nullable|string|max:255',
         'cabine' => 'nullable|string|max:255',
+        'specialty' => 'nullable|string|max:255',
+        'in_clinic' => ['boolean' , 'required'],
+
+
     ]);
 
     $doctor->update($validated);
@@ -101,5 +139,25 @@ class DoctorController extends Controller
         $doctor->delete();
 
         return redirect()->route('doctors.index')->with("success", "Doctor deleted successfully.");
+    }
+
+
+        /*
+    * Toggle active status of a user
+    */
+    public function toggleActive(string $id)
+    {
+            $doctor = Doctor::findOrFail($id)->user;
+
+
+            if (! $doctor->hasRole('doctor')) {
+                abort(403);
+            }
+
+            $doctor->is_active = ! $doctor->is_active;
+            $doctor->suspended_at = $doctor->is_active ? null : now();
+            $doctor->save();
+
+            return redirect()->back()->with('success', 'Doctor status updated');
     }
 }

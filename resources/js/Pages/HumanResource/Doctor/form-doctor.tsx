@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { Doctor } from "@/Types"
 import FormField from "@/components/form-field"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 
 type Props = {
@@ -22,6 +24,8 @@ function FormDoctor({doctor , method , action} : Props) {
         address: doctor?.address || "",
         email: doctor?.email || "",
         cabine: doctor?.cabine || "",
+        specialty: doctor?.specialty || "",
+        in_clinic : doctor?.in_clinic || false,
   })
 
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({})
@@ -117,6 +121,27 @@ function FormDoctor({doctor , method , action} : Props) {
                     form.setData("cabine", value)
                 }}
             />
+
+        {/* Cabine */}
+        <FormField
+                name="specialty"
+                label="specialty"
+                placeholder="Specialty"
+                value={form.data.specialty}
+
+                error={clientErrors?.specialty || form.errors?.specialty}
+                onChangeEvent={(value) => {
+                    form.setData("specialty", value)
+                }}
+            />
+
+        <div className="flex items-center space-x-3">
+            <Checkbox
+                name="remember"
+                onCheckedChange={(checked) => form.setData("in_clinic" , Boolean(checked))}
+            />
+            <Label htmlFor="remember">In Clinic</Label>
+        </div>
 
 
 

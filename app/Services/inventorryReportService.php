@@ -168,7 +168,7 @@ class inventorryReportService{
                     'purchases.net_amount as total_amount',
                     'purchases.payment_status as status'
                 )
-                ->when($from , $to, function ($query) use ($from , $to) {
+                ->when([$from , $to], function ($query) use ($from , $to) {
                     $query->whereBetween('purchases.purchase_date', [$from, $to]);
                 })
                 ->orderByDesc('purchases.purchase_date')

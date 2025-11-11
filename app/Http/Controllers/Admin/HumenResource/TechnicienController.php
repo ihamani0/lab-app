@@ -43,7 +43,7 @@ class TechnicienController extends Controller
         'is_active' => 'sometimes|boolean',
         ]);
 
-        $password  = "12345678";
+        $password  = "ChangeMe123@";
 
         $user = User::create([
         'name' => $data['name'],

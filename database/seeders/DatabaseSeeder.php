@@ -19,34 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // Doctor::factory(10)->create();
-        // Patient::factory(20)->create();
-        //     // 1. Create 5 categories
-        // $categories = Category::factory()->count(5)->create();
-
-        // // 2. Create 10 brands
-        // $brands = Brand::factory()->count(10)->create([
-        //     'category_id' => $categories->random()->id, // pick random category
-        // ]);
-
-        // // 3. Create 50 products
-        // Material::factory()->count(50)->create([
-        //     'category_id' => $categories->random()->id, // pick random category
-        //     'brand_id' => $brands->random()->id,       // pick random brand
-        // ]);
-
-        Service::create([
-            'service_number' => 111,
-            'name' => "Full Zr",
-            "description" => "Full Zirconia",
-            "price" => 10000
+        $this->call([
+            RolesAndAdminSeeder::class, // <-- ADD THIS LINE
+            // You can add other seeders here in the future
+            MaterialSeeder::class
         ]);
+
     }
 }

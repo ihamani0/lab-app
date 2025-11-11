@@ -4,6 +4,8 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 import { router } from "@inertiajs/react";
 import { Trash } from "lucide-react";
 import EditDoctor from "./edit-doctor";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 
 
 type Props = {
@@ -15,26 +17,53 @@ function DataDoctor({doctors} : Props) {
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>ID</TableHead>
+                <TableHead>#</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Phone</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Cabine</TableHead>
-                <TableHead>Address</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Active/Pause</TableHead>
                 <TableHead className="text-right">
                     Actions
                 </TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
-            {doctors.map((doctor) => (
+            {doctors.map((doctor , i) => (
                 <TableRow key={doctor.id}>
-                    <TableCell>{doctor.id}</TableCell>
-                    <TableCell>{doctor.name || "N|A"}</TableCell>
-                    <TableCell>{doctor.phone || "N|A"}</TableCell>
-                    <TableCell>{doctor.email || "N|A"}</TableCell>
-                    <TableCell>{doctor.cabine || "N|A"}</TableCell>
-                    <TableCell>{doctor.address || "N|A"}</TableCell>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{doctor.name || "-"}</TableCell>
+                    <TableCell>{doctor.user.email || "-"}</TableCell>
+
+                    <TableCell>
+
+                        {doctor.user.is_active ? (
+                            <Badge variant={doctor.user.is_active ? "secondary" : "destructive"}
+                            className="bg-green-500 text-white dark:bg-green-600"
+                        >
+                        {doctor.user.is_active ?"Active" :"Inactive"}
+                        </Badge>
+                        ) : (                        <Badge variant={doctor.user.is_active ? "secondary" : "destructive"}
+                            className="bg-red-300 text-white dark:bg-red-400"
+                        >
+                        {doctor.user.is_active ?"Active" :"Inactive"}
+                        </Badge>)}
+                    </TableCell>
+
+                    <TableCell>
+                        <Switch
+                            checked={!!doctor.user.is_active}
+                            onCheckedChange={() => {
+                                    router.put(
+                                        `/doctors/${doctor.id}/toggle-active`,
+                                        {
+                                            preserveState: true,
+                                        }
+                                    );
+                                }}
+                            />
+                    </TableCell>
+
+
                     <TableCell className="text-right space-x-2">
 
                         <EditDoctor  doctor={doctor}/>
