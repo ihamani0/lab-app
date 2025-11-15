@@ -18,8 +18,8 @@ class EnsureUserIsActive
         $user = $request->user();
         if ($user && ! $user->is_active) {
             // Option: redirect with message or abort
-            // auth()->logout();
-            return redirect()->route('login')->withErrors(['email' => 'Your account is suspended.']);
+            auth()->logout();
+            return redirect()->route('login')->withErrors(['email' => 'Your account is deactivated. Contact the administrator.']);
         }
         return $next($request);
     }

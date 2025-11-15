@@ -1,0 +1,7 @@
+
+
+export default function AccountingDashboard() {
+  return (
+    <div>Accounting Dashboard</div>
+  )
+}

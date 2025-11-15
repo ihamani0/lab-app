@@ -32,9 +32,9 @@ import {
     Wrench,
 } from "lucide-react";
 
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import AppLogo from "./app-logo";
-import { NavItem } from "@/Types";
+import { Auth, NavItem, PageProps } from "@/Types";
 import NavMain from "./nav-main";
 import NavCollapsible from "./nav-collapsible";
 import NavUser from "./nav-user";
@@ -163,6 +163,11 @@ const ReportItems : NavItem[] = [
 
 
 export function AppSidebar() {
+
+    const { auth } = usePage<PageProps>().props ;
+    const roles = auth.user ? auth.user.roles : [] ;
+
+
     return (
         <Sidebar variant="inset" collapsible="icon">
             <Header />
@@ -174,9 +179,12 @@ export function AppSidebar() {
 
                 {/* --------------------------------------------------- */}
 
-                <NavCollapsible icon={Hospital} titleCollapsible="Human Resource" >
-                    <NavMain  items={secondaryNavItems}  />
-                </NavCollapsible>
+                { roles.includes('super-admin')  && (
+                    <NavCollapsible icon={Hospital} titleCollapsible="Human Resource" >
+                        <NavMain  items={secondaryNavItems}  />
+                    </NavCollapsible>
+                )}
+
 
                 <NavCollapsible icon={Package} titleCollapsible="Inventory" >
                     <NavMain  items={InventoryNavItems}  />
@@ -193,10 +201,12 @@ export function AppSidebar() {
                     <NavMain  items={CaseNavItems}  />
                 </NavCollapsible>
 
+                { roles.includes('super-admin')  && (
 
                 <NavCollapsible icon={ChartAreaIcon} titleCollapsible="Reports" >
                     <NavMain  items={ReportItems}  />
                 </NavCollapsible>
+                )}
 
                 {/* --------------------------------------------------- */}
 

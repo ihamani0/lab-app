@@ -32,7 +32,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // 3. Determine the correct redirect path based on the user's role
+        $redirectPath = match (true) {
+            $user->hasRole('doctor') => route('doctor.dashboard'),
+            $user->hasRole('accounting') => route('accounting.dashboard'),
+            $user->hasRole(['super-admin', 'technician']) => route('dashboard'),
+            // Add a default fallback for any other authenticated user, just in case
+            default => route('dashboard'),
+        };
+
+        // 4. Redirect the user to their intended path
+        return redirect()->intended($redirectPath);
     }
 
     /**

@@ -131,10 +131,10 @@ class CaseController extends Controller
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
-            'technician_id' => 'required|exists:users,id',
+            'technician_id' => 'nullable|exists:users,id',
             'assistant' => 'required|string',
             'received_date' => 'required|date',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
         ]);
 
         try{
@@ -143,6 +143,13 @@ class CaseController extends Controller
                 // dd($validated);
                 ProsthesisCase::create($validated);
             });
+
+
+
+            if(auth()->user()->hasRole('doctor')){
+
+                return redirect()->route('doctor.dashboard')->with('success', 'Case created successfully.');
+            }
 
             return redirect()->route('prosthesis-case.index')->with('success', 'Case created successfully.');
 
@@ -159,7 +166,7 @@ class CaseController extends Controller
         return Inertia::render('Case/edit-case' , [
             "prosthesis_case" => $prosthesis_case ,
             "doctors" => Doctor::all() ,
-            "technicians" => User::role('technician')->get() ,
+            "technicians" => User::role('technician')->get() ?? ' ' ,
             "patients" => Patient::all() ,
             "service" => Service::all(),
         ]);
@@ -170,6 +177,7 @@ class CaseController extends Controller
 
     public function update(CaseRequest $request , ProsthesisCase $prosthesis_case ,    CaseCalculator $case_calculator){
 
+         
 
         $validated = $request->validated();
         // dd($validated);
@@ -214,6 +222,7 @@ class CaseController extends Controller
 
 
         public function destroy(string $id){
+
             $prosthesis_case = ProsthesisCase::findOrFail($id);
             $prosthesis_case->delete();
 

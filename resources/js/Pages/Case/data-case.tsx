@@ -7,17 +7,21 @@ import { getBadgeVariantForCases, getBadgeVariantForPurchase } from "@/lib/utils
 import {  Product, Purchase as PurchaseType, Suppiler } from "@/Types";
 import { Link, router } from "@inertiajs/react";
 import { format } from "date-fns";
-import { FileDown, Pen, Trash, Truck } from "lucide-react";
+import { FileDown, Pen, Route, Trash, Truck } from "lucide-react";
 import ViewCase from "./view-case";
 import ReuseToolTipe from "@/components/reuse-tooltipe";
 import axios from "axios";
 import { useState } from "react";
+import { route } from "ziggy-js";
 type Props = {
     cases : CaseType[];
 
 }
 
 export default function DataCase({cases}:Props) {
+
+
+    console.log(route("prosthesis-case.destroy" , 1));
 
     const [loading, setLoading] = useState(false);
 
@@ -97,9 +101,7 @@ export default function DataCase({cases}:Props) {
                             size="sm"
                             onClick={() => {
                                 if (confirm("Are you sure?")) {
-                                    router.delete(
-                                        `/prosthesis-case/${item.id}`
-                                    );
+                                    router.delete(route("prosthesis-case.destroy", item.id));
                                 }
                             }}
                             >

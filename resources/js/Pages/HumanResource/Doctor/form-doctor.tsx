@@ -22,7 +22,7 @@ function FormDoctor({doctor , method , action} : Props) {
         name: doctor?.name || "",
         phone: doctor?.phone || "",
         address: doctor?.address || "",
-        email: doctor?.email || "",
+        email: doctor?.user.email || "",
         cabine: doctor?.cabine || "",
         specialty: doctor?.specialty || "",
         in_clinic : doctor?.in_clinic || false,
@@ -137,10 +137,14 @@ function FormDoctor({doctor , method , action} : Props) {
 
         <div className="flex items-center space-x-3">
             <Checkbox
-                name="remember"
-                onCheckedChange={(checked) => form.setData("in_clinic" , Boolean(checked))}
+                id="in_clinic"
+                name="in_clinic"
+                checked={form.data.in_clinic}
+                onCheckedChange={(checked) =>
+                    form.setData("in_clinic", checked === true)
+                }
             />
-            <Label htmlFor="remember">In Clinic</Label>
+            <Label htmlFor="in_clinic">In Clinic</Label>
         </div>
 
 

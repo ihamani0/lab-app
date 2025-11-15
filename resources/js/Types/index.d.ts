@@ -1,3 +1,4 @@
+import { Doctor } from '@/Types';
 
 import { LucideIcon } from "lucide-react";
 
@@ -39,6 +40,9 @@ export interface User {
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
+    roles : string[];
+    permissions : string[];
+    doctor ?: Doctor;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
@@ -48,36 +52,21 @@ export interface Auth {
     user: User;
 }
 
-
-
-export interface BreadcrumbItem {
-    title: string;
-    href: string;
+export interface PageProps {
+    auth: Auth;
+    appName?: string;
+    flash ?: FalshProps;
+    [key: string]: unknown;
 }
 
 
-export interface Doctor   {
-    id: string ;
-    name: string;
-    phone?: number;
-    address?: string;
-    cabine ?: string;
-    specialty ?: string;
-    in_clinic : boolean;
-    user : User;
+
+export interface FalshProps
+{
+    flash: { success?: string; error?: string };
+    [key: string]: any;
+
 }
-
-export interface Patient   {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-
-    doctor : {
-        id : number ,
-        name : string
-    };
-};
 
 
 export interface NavGroup {
@@ -92,21 +81,6 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export interface SharedData {
-    name: string;
-    quote: { message: string; author: string };
-    auth: Auth;
-    sidebarOpen: boolean;
-    [key: string]: unknown;
-}
-
-
-export interface FalshProps
-{
-    flash: { success?: string; error?: string };
-    [key: string]: any;
-
-}
 
 export interface PaginationLink  {
     url: string | null;
@@ -114,6 +88,44 @@ export interface PaginationLink  {
     active: boolean;
 };
 
+
+export interface BreadcrumbItem {
+    title: string;
+    href: string;
+}
+
+
+
+
+
+
+export interface Doctor   {
+    id: string ;
+    name: string;
+    phone?: number;
+    address?: string;
+    cabine ?: string;
+    specialty ?: string;
+    in_clinic : boolean;
+    user : User;
+
+
+    patients?: Patient[];  // <-- new
+    cases?: Case[];        // <-- new
+    invoices?: InvoiceCase[];  // <-- new
+}
+
+export interface Patient   {
+    id: number;
+    name: string;
+    phone: string;
+    address: string;
+
+    doctor : {
+        id : number ,
+        name : string
+    };
+};
 
 
 export interface Category {

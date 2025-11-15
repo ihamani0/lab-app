@@ -29,7 +29,10 @@ export default function Login() {
     const handleSubmit = (e : React.FormEvent) => {
         e.preventDefault();
         post('/login' , {
-            preserveState : true
+            preserveState : true,
+            onSuccess: () => {
+                setData('password' , '');
+            }
         });
     };
 

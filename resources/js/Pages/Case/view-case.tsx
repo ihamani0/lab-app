@@ -51,7 +51,7 @@ export default function ViewCase({prosthesis_case} : {prosthesis_case : Case}) {
                 </div>
                 <div className="flex items-center gap-1">
                     <Wrench/>
-                    <span className="font-medium">{prosthesis_case.technician.name}</span>
+                    <span className="font-medium">{prosthesis_case?.technician?.name ?? '-'}</span>
                 </div>
             </div>
             <div className="space-y-4">

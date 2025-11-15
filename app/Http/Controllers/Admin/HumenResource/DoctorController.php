@@ -34,7 +34,7 @@ class DoctorController extends Controller
                     'phone' => $doctor->phone,
                     'email' => $doctor->email,
                     'cabine' => $doctor->cabine,
-                    
+
                     'user' => [
                         'id' => $doctor->user->id,
                         'email' => $doctor->user->email,
@@ -71,7 +71,8 @@ class DoctorController extends Controller
             'email' => 'required|email|max:255',
             'address' => 'nullable|string|max:255',
             'cabine' => 'nullable|string|max:255',
-            'in_clinic' => ['boolean' , 'required'],
+            'specialty' => 'nullable|string|max:255',
+            'in_clinic' => 'required|boolean',
         ]);
 
 
@@ -93,7 +94,7 @@ class DoctorController extends Controller
             'address' => $validated['address'] ?? null,
             'cabine' => $validated['cabine'] ?? null,
             'in_clinic' => $validated['in_clinic'],
-            'specialty' => 'nullable|string|max:255',
+            'specialty' => $validated['specialty'],
 
         ]);
 
@@ -108,24 +109,38 @@ class DoctorController extends Controller
      */
     public function update(Request $request, Doctor $doctor)
     {
+
         $validated = $request->validate([
         'name' => [
             'required',
             'string',
             'max:255',
-            Rule::unique('doctors', 'name')->ignore($doctor->id), // ✅ Ignore current doctor
+            Rule::unique('doctors', 'name')->ignore($doctor->id),
+            Rule::unique('users', 'name')->ignore($doctor->user->id), // ✅ Ignore current doctor
         ],
         'phone' => 'nullable|string|max:255',
-        'email' => 'nullable|email|max:255',
+        'email' => ['required','email','max:255' , Rule::unique('users', 'email')->ignore($doctor->user->id),],
         'address' => 'nullable|string|max:255',
         'cabine' => 'nullable|string|max:255',
         'specialty' => 'nullable|string|max:255',
-        'in_clinic' => ['boolean' , 'required'],
+        'in_clinic' => 'required|boolean',
 
 
     ]);
 
-    $doctor->update($validated);
+    $doctor->user->update([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+    ]);
+
+    $doctor->update([
+        'name' => $validated['name'],
+        'phone' => $validated['phone'] ?? null,
+        'address' => $validated['address'] ?? null,
+        'cabine' => $validated['cabine'] ?? null,
+        'in_clinic' => $validated['in_clinic'] === true,
+        'specialty' => $validated['specialty'],
+    ]);
 
     return redirect()->back()->with('success', 'Doctors updated successfully.');
     }

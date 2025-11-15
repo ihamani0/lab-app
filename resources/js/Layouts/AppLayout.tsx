@@ -14,7 +14,7 @@ export default function AppLayout({children , breadcrumbs = []} : { children: Re
 
     //// Get shared props sent from Laravel backend
     const { props} = usePage();
-    const { sidebarOpen=true } = props;// Default to open
+    const { sidebarOpen = true } = props;// Default to open
 
 
 

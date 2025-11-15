@@ -16,7 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         ]);
         $middleware->alias([
+            'guest.ma' => \App\Http\Middleware\RedirectIfAuthenticated::class,
             'active' => \App\Http\Middleware\EnsureUserIsActive::class,
+            'role' => \App\Http\Middleware\EnsureRoleBasedAccess::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
         //
     })

@@ -1,17 +1,14 @@
 
 
- import { router, useForm, usePage } from "@inertiajs/react"
+ import { useForm, usePage } from "@inertiajs/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { BookCheckIcon, Calendar1, CalendarIcon, Check, NotebookPenIcon, NotebookText, Package, PackageOpenIcon, PlusCircle, Stethoscope, User, UserCog, UserIcon, Wrench } from "lucide-react"
-
+import { BookCheckIcon, Calendar1, CalendarIcon, Check, NotebookPenIcon, NotebookText, Package, PlusCircle, Stethoscope, User, UserCog, UserIcon, Wrench } from "lucide-react"
 import AppLayout from "@/Layouts/AppLayout"
 import { Doctor, User as TechniciansType, Patient, Case, statusCase, Service, FalshProps } from "@/Types"
-// import InvoiceItems from "./invoice-items"
-
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
@@ -21,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import CaseItems from "./case-items"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@radix-ui/react-separator"
+import { route } from "ziggy-js"
 
 
 
@@ -62,18 +60,25 @@ type PropsType = {
 
 export default function PurchaseEdit({prosthesis_case , doctors, technicians, patients ,service }: PropsType) {
 
+
+
+
     const { flash }  =  usePage<FalshProps>().props ;
 
 
     const form = useForm({
         id : prosthesis_case.id,
-        patient_id : prosthesis_case.patient.id?.toString() ?? "",
-        doctor_id : prosthesis_case.doctor.id?.toString() ?? "",
-        technician_id : prosthesis_case.technician.id?.toString() ?? "",
+
+        patient_id : prosthesis_case.patient?.id?.toString() ?? "",
+        doctor_id : prosthesis_case.doctor?.id?.toString() ?? "",
+        technician_id : prosthesis_case.technician?.id?.toString() ?? "",
+
         assistant : prosthesis_case.assistant ?? "",
         description: prosthesis_case.description?? "",
         status : prosthesis_case.status ?? "pending" ,
+
         delivered_date : prosthesis_case.delivered_date? new Date(prosthesis_case.delivered_date) : null,
+
         case_items : prosthesis_case.case_items.map(item => ({
             service_id : item.service.id.toString() ,
             tooth_number : item.tooth_number ,
@@ -117,9 +122,12 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
 
   const totalAmount = form.data.case_items.reduce((sum, item) => sum + calcLineTotal(item), 0)
 
+
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    form.put(`/prosthesis-case/${prosthesis_case.id}` ,
+    // console.log(route('prosthesis-case.update' , {"prosthesis-case" : prosthesis_case.id} ))
+    form.put(route('prosthesis-case.update' , {"prosthesis_case" : prosthesis_case.id} ) ,
     {
         preserveScroll: true,
     });
@@ -140,9 +148,9 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
 
   return (
     <AppLayout breadcrumbs={[
-      { title: "Dashboard", href: "/" },
-      { title: "Case Management", href: "/prosthesis-case" },
-      { title: "Edit Case", href: `/prosthesis-case/${prosthesis_case.id}/edit` },
+      { title: "Dashboard", href: route('dashboard') },
+      { title: "Case Management", href: route('prosthesis-case.index') },
+      { title: "Edit Case", href: route('prosthesis-case.edit' , prosthesis_case.id) },
     ]}>
       <form onSubmit={submit} className="space-y-6">
 
@@ -163,6 +171,7 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
             <div className="grid gap-3 grid-cols-1  md:grid-cols-2 flex-1" >
                 {/* Col 3 */}
                 <div className="space-y-5">
+
                     {/* Doctors */}
                     <div className="space-y-2">
                     <Label className="flex gap-x-1 items-center text-lg">
@@ -179,6 +188,8 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
                         ))}
                         </SelectContent>
                     </Select>
+                    {/* ERROR DISPLAY */}
+                    {form.errors.doctor_id && <p className="text-sm text-red-500 mt-1">{form.errors.doctor_id}</p>}
                     </div>
 
 
@@ -197,6 +208,7 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
                         ))}
                         </SelectContent>
                     </Select>
+                    {form.errors.patient_id && <p className="text-sm text-red-500 mt-1">{form.errors.patient_id}</p>}
                     </div>
 
                     {/* Technician */}
@@ -216,32 +228,42 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
                         </SelectContent>
                     </Select>
                     </div>
+                    {form.errors.technician_id && <p className="text-sm text-red-500 mt-1">{form.errors.technician_id}</p>}
                 </div>
 
                 {/* Col 2 */}
+
                 <div className="space-y-5">
+
                     {/* Assistant */}
+
                     <div className="space-y-2">
+
                         <Label className="flex gap-x-1 items-center text-lg">
                             <UserCog />
                             Assistant
                         </Label>
                         <Input value={form.data.assistant} onChange={(e) => form.setData("assistant", e.target.value)} />
+
+                        {form.errors.assistant && <p className="text-sm text-red-500 mt-1">{form.errors.status}</p>}
                         </div>
 
                         {/* Status */}
                         <div className="space-y-2">
-                        <Label className="flex gap-x-1 items-center text-lg">
-                            <BookCheckIcon />
-                            Status</Label>
-                        <Select value={form.data.status} onValueChange={(val) => form.setData("status", val as statusCase)}>
-                            <SelectTrigger className="w-full" >
-                                <SelectValue placeholder="Select status" /></SelectTrigger>
-                            <SelectContent>
-                            {STATUS.map((st) => <SelectItem key={st.value} value={st.value}>{st.name}</SelectItem>)}
-                            </SelectContent>
-                        </Select>
+                            <Label className="flex gap-x-1 items-center text-lg">
+                                <BookCheckIcon />
+                                Status</Label>
+                            <Select value={form.data.status} onValueChange={(val) => form.setData("status", val as statusCase)}>
+                                <SelectTrigger className="w-full" >
+                                    <SelectValue placeholder="Select status" /></SelectTrigger>
+                                <SelectContent>
+                                {STATUS.map((st) => <SelectItem key={st.value} value={st.value}>{st.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            {form.errors.status && <p className="text-sm text-red-500 mt-1">{form.errors.assistant}</p>}
                     </div>
+
+
 
                     {/* Delivery Date */}
                     {(form.data.status === "completed" || form.data.status === "delivered") && (
@@ -308,7 +330,7 @@ export default function PurchaseEdit({prosthesis_case , doctors, technicians, pa
                 onChange={(val)=> form.setData("description" , val.target.value)}
                 />
                 </div>
-
+                {form.errors.description && <p className="text-sm text-red-500 mt-1">{form.errors.description}</p>}
             </div>
 
 

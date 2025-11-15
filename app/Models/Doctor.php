@@ -16,7 +16,7 @@ class Doctor extends Model
         'email',
         'cabine',
         'specialty'
-        ,'user_id'
+        ,'user_id','in_clinic'
     ];
 
     public function patients(){
@@ -26,5 +26,11 @@ class Doctor extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function cases(){
+        return $this->hasMany(ProsthesisCase::class, 'doctor_id');
+    }
+   
+
 
 }

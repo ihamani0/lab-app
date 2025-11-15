@@ -30,7 +30,8 @@ class AccountingController extends Controller
                                     ->appends($request->only('search'));
 
         return Inertia::render('HumanResource/Accounting/accounting' , [ "accountings" => $accounting  ,
-    'filters' => $request->only('search') ]);
+
+        'filters' => $request->only('search') ]);
     }
 
 

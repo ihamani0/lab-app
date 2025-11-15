@@ -64,7 +64,7 @@ class RolesAndAdminSeeder extends Seeder
         $doctorRole->givePermissionTo([
             'view doctor dashboard',
             'manage patient',
-            'view cases',
+            'manage cases',
             'manage appointments'
         ]);
 
@@ -99,7 +99,7 @@ class RolesAndAdminSeeder extends Seeder
         );
 
         $admin->assignRole('super-admin');
-
+        $admin->givePermissionTo(Permission::all());
         $adminBackUp = User::firstOrCreate(
             ['email' => 'admin-backup@lab.com'],
             [
@@ -109,6 +109,8 @@ class RolesAndAdminSeeder extends Seeder
             ]
         );
         $adminBackUp->assignRole('super-admin');
+        $adminBackUp->givePermissionTo(Permission::all());
+
 
     }
 }
